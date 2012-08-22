@@ -186,5 +186,7 @@ public abstract class CommonService<T> {
         }
     }
 
-
+    public void setCommonRepository(CommonRepository commonRepository) {
+        this.commonRepository = commonRepository;
+    }
 }

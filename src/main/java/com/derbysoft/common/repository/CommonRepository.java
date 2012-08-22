@@ -62,7 +62,7 @@ public class CommonRepository {
     }
 
     public void save(Object entity) {
-        getSession().saveOrUpdate(entity);
+       getSession().saveOrUpdate(entity);
     }
 
     public void delete(Object entity) {

@@ -6,10 +6,11 @@ import org.hibernate.type.Type;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
- * @since 2009-3-19
  * @author zhupan
  * @version 1.0
+ * @since 2009-3-19
  */
 public class PersistenceSupportHibernateInterceptor extends EmptyInterceptor {
 
@@ -22,12 +23,16 @@ public class PersistenceSupportHibernateInterceptor extends EmptyInterceptor {
                 if ("createTime".equals(propertyNames[i])) {
                     Date createTime = getCurrentTime();
                     state[i] = createTime;
-                    support.setCreateTime(createTime);
+                    if (support.getCreateTime() == null) {
+                        support.setCreateTime(createTime);
+                    }
                     modified = true;
                 } else if ("lastModifyTime".equals(propertyNames[i])) {
                     Date updateTime = getCurrentTime();
                     state[i] = updateTime;
-                    support.setLastModifyTime(updateTime);
+                    if (support.getLastModifyTime() == null) {
+                        support.setLastModifyTime(updateTime);
+                    }
                     modified = true;
                 }
             }
