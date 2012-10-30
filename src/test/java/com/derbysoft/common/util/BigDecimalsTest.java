@@ -13,15 +13,18 @@ import static org.junit.Assert.assertNull;
  * @since 2012-5-25
  */
 public class BigDecimalsTest {
+
     @Test
     public void test() {
-        assertEquals(new BigDecimal("100.22"), BigDecimals.roundUp(100.211));
-        assertEquals(new BigDecimal("100.20"), BigDecimals.roundUp(100.2));
-        assertEquals(new BigDecimal("100.20"), BigDecimals.roundUp(100.2000));
-        assertEquals(new BigDecimal("100.21"), BigDecimals.roundUp(100.2001));
-        assertEquals(new BigDecimal("100.00"), BigDecimals.roundUp(100));
-        assertEquals(new BigDecimal("100.20"), BigDecimals.roundUp("100.2000"));
-        assertEquals(new BigDecimal("100.21"), BigDecimals.roundUp("100.2001"));
+        assertEquals(new BigDecimal("100.212"), BigDecimals.roundUp(100.2111));
+        assertEquals(new BigDecimal("100.200"), BigDecimals.roundUp(100.2));
+        assertEquals(new BigDecimal("100.200"), BigDecimals.roundUp(100.2000));
+        assertEquals(new BigDecimal("100.201"), BigDecimals.roundUp(100.2001));
+        assertEquals(new BigDecimal("100.000"), BigDecimals.roundUp(100));
+        assertEquals(new BigDecimal("100.200"), BigDecimals.roundUp("100.2000"));
+        assertEquals(new BigDecimal("100.201"), BigDecimals.roundUp("100.2001"));
+        assertEquals(new BigDecimal("100.300"), BigDecimals.roundUp("100.2999999999"));
+        assertEquals(new BigDecimal("100.300"), BigDecimals.roundUp("100.3000000000001"));
         String a = null;
         assertNull(BigDecimals.roundUp(a));
         BigDecimal b = null;
@@ -29,4 +32,5 @@ public class BigDecimalsTest {
         Double c = null;
         assertNull(BigDecimals.roundUp(c));
     }
+
 }

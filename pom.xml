@@ -4,7 +4,7 @@
     <groupId>com.derbysoft</groupId>
     <artifactId>derbysoft-commons</artifactId>
     <name>derbysoft-commons</name>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <build>
@@ -98,6 +98,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
+            <version>3.1.2.RELEASE</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
             <version>3.1.2.RELEASE</version>
             <scope>provided</scope>
         </dependency>

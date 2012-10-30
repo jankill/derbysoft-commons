@@ -9,15 +9,19 @@ import java.math.BigDecimal;
  */
 public class BigDecimals {
 
+    private static final int SCALE = 3;
+
+    private static final double FOR_SCALE = 10000d;
+
     public static BigDecimal roundUp(BigDecimal value, int i) {
         if (value == null) {
             return null;
         }
-        return value.setScale(i, BigDecimal.ROUND_UP);
+        return BigDecimal.valueOf((Math.floor(value.doubleValue() * FOR_SCALE)) / FOR_SCALE).setScale(i, BigDecimal.ROUND_UP);
     }
 
     public static BigDecimal roundUp(BigDecimal value) {
-        return roundUp(value, 2);
+        return roundUp(value, SCALE);
     }
 
     public static BigDecimal roundUp(Double value) {
@@ -59,5 +63,6 @@ public class BigDecimals {
         }
         return roundUp(new BigDecimal(value), i);
     }
+
 
 }

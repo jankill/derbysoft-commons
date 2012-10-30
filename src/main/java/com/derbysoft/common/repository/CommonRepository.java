@@ -1,7 +1,10 @@
 package com.derbysoft.common.repository;
 
 import com.derbysoft.common.paginater.Paginater;
-import org.hibernate.*;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.*;
 import org.hibernate.internal.CriteriaImpl;
 
@@ -28,10 +31,7 @@ public class CommonRepository {
     }
 
     public <T> T load(Class<T> clazz, String[] propertyNames, Object[] propertyValues) {
-        getSession().setFlushMode(FlushMode.MANUAL);
-        T entity = (T) createQuery(createQueryString(clazz, propertyNames), propertyValues).uniqueResult();
-        getSession().setFlushMode(FlushMode.AUTO);
-        return entity;
+        return (T) createQuery(clazz, propertyNames, propertyValues).uniqueResult();
     }
 
     public Object load(DetachedCriteria criteria) {
@@ -52,7 +52,7 @@ public class CommonRepository {
 
     @SuppressWarnings({"unchecked"})
     public <T> List<T> find(Class<T> clazz, String[] propertyNames, Object[] propertyValues) {
-        return createQuery(createQueryString(clazz, propertyNames), propertyValues).list();
+        return createQuery(clazz, propertyNames, propertyValues).list();
     }
 
     public <T> List<T> loadAll(final Class<T> entityClass) {
@@ -62,7 +62,7 @@ public class CommonRepository {
     }
 
     public void save(Object entity) {
-       getSession().saveOrUpdate(entity);
+        getSession().saveOrUpdate(entity);
     }
 
     public void delete(Object entity) {
@@ -110,11 +110,11 @@ public class CommonRepository {
         return criteria.getExecutableCriteria(getSession()).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
     }
 
-    private Query createQuery(String queryString, Object... values) {
-        Query query = getSession().createQuery(queryString);
+    private Query createQuery(Class<?> clazz, String[] propertyNames, Object[] values) {
+        Query query = getSession().createQuery(createQueryString(clazz, propertyNames));
         if (values != null) {
             for (int i = 0; i < values.length; i++) {
-                query.setParameter(i, values[i]);
+                query.setParameter(propertyNames[i], values[i]);
             }
         }
         return query;
@@ -125,11 +125,21 @@ public class CommonRepository {
         StringBuffer sb = new StringBuffer();
         if (propertyNames != null) {
             for (String propertyName : propertyNames) {
-                sb.append(" _alias.").append(propertyName).append("=? and");
+                sb.append(" _alias.").append(propertyName).append(" = :").append(propertyName).append(" and");
             }
             hql = hql + " where " + sb.substring(0, sb.length() - THREE);
         }
         return hql;
+    }
+
+    private Query createQuery(String queryString, Object[] values) {
+        Query query = getSession().createQuery(queryString);
+        if (values != null) {
+            for (int i = 0; i < values.length; i++) {
+                query.setParameter(i, values[i]);
+            }
+        }
+        return query;
     }
 
     public void setSessionFactory(SessionFactory sessionFactory) {
