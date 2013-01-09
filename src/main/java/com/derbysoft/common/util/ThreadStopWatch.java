@@ -7,7 +7,7 @@ import org.apache.commons.lang3.time.StopWatch;
  * @version 1.0
  * @since 2009-5-25
  */
-public class ThreadStopWatch {
+public abstract class ThreadStopWatch {
 
     private static ThreadLocal<StopWatch> stopWatch = new ThreadLocal<StopWatch>();
 

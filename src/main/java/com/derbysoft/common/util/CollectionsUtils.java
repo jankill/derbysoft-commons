@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class CollectionUtils extends org.apache.commons.collections.CollectionUtils {
+public abstract class CollectionsUtils extends org.apache.commons.collections.CollectionUtils {
 
     public static <T> T get(List<T> list, int index) {
         if (index < 0) {

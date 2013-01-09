@@ -2,10 +2,11 @@ package com.derbysoft.common.paginater;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
- * @since 2009-3-19
  * @author zhupan
  * @version 1.0
+ * @since 2009-3-19
  */
 public class Paginater {
 
@@ -26,7 +27,7 @@ public class Paginater {
     private List objects = new ArrayList();
 
     public int getTotalPage() {
-        return (int) Math.ceil(new Double(totalCount).doubleValue() / getPageSize());
+        return (int) Math.ceil(Double.valueOf(totalCount) / getPageSize());
     }
 
     public int getCurrentPage() {

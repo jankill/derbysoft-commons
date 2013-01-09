@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  * @version 1.0
  * @since 2012-5-25
  */
-public class BigDecimals {
+public abstract class BigDecimals {
 
     private static final int SCALE = 3;
 

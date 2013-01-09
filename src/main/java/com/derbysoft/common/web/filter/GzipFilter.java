@@ -7,36 +7,31 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.zip.GZIPOutputStream;
 
-public class GzipFilter extends Filter {
+public class GzipFilter extends ServletFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(GzipFilter.class);
     private static final String VARY_HEADER_PARAM = "varyHeader";
-    private static final String RETURN_ON_NOT_OK_PARAM = "returnOnNonOK";
 
     private boolean setVaryHeader;
-    private boolean returnOnNonOk = true;
 
-    protected void doInit(FilterConfig filterConfig) throws Exception {
+    protected void doInit(FilterConfig filterConfig) {
         String varyParam = filterConfig.getInitParameter(VARY_HEADER_PARAM);
         if (varyParam != null) {
             setVaryHeader = Boolean.valueOf(varyParam);
-        }
-
-        String returnOnNotOkParam = filterConfig.getInitParameter(RETURN_ON_NOT_OK_PARAM);
-        if (returnOnNotOkParam != null) {
-            returnOnNonOk = Boolean.valueOf(returnOnNotOkParam);
         }
     }
 
     protected void doDestroy() {
     }
 
-    protected void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws Exception {
+    protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (!isIncluded(request) && acceptsEncoding(request, "gzip") && !response.isCommitted()) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug(request.getRequestURL() + ". Writing with gzip compression");

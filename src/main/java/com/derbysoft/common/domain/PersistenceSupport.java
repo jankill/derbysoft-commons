@@ -1,5 +1,7 @@
 package com.derbysoft.common.domain;
 
+import com.derbysoft.common.util.CloneUtils;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,13 +16,13 @@ public abstract class PersistenceSupport implements Serializable {
 
     @Id
     @GeneratedValue
-    protected Long id;
+    private Long id;
 
     @Column(name = "create_time")
-    protected Date createTime;
+    private Date createTime;
 
     @Column(name = "last_modify_time")
-    protected Date lastModifyTime;
+    private Date lastModifyTime;
 
     @Version
     protected Integer version;
@@ -42,11 +44,11 @@ public abstract class PersistenceSupport implements Serializable {
     }
 
     public Date getCreateTime() {
-        return createTime;
+        return CloneUtils.clone(createTime);
     }
 
     public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+        this.createTime = CloneUtils.clone(createTime);
     }
 
     public Date getUpdateTime() {
@@ -54,32 +56,30 @@ public abstract class PersistenceSupport implements Serializable {
     }
 
     public Date getLastModifyTime() {
-        return lastModifyTime;
+        return CloneUtils.clone(lastModifyTime);
     }
 
     public void setLastModifyTime(Date lastModifyTime) {
-        this.lastModifyTime = lastModifyTime;
+        this.lastModifyTime = CloneUtils.clone(lastModifyTime);
     }
 
     public void setUpdateTime(Date lastModifyTime) {
-        this.lastModifyTime = lastModifyTime;
+        setLastModifyTime(lastModifyTime);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(getClass().isInstance(obj))) {
+        Class<? extends PersistenceSupport> clazz = getClass();
+        if (!(clazz.isInstance(obj))) {
             return false;
         }
-
         boolean superEquals = super.equals(obj);
         if (superEquals) {
             return true;
         }
-
         if (getId() == null) {
             return false;
         }
-
         PersistenceSupport support = (PersistenceSupport) obj;
         if (support.getId() == null) {
             return false;

@@ -29,17 +29,18 @@ public class InitializePaginaterInterceptor extends AbstractInterceptor {
     private static final String SORT_DIRECTION = "dir";
 
     @Override
-    public String intercept(ActionInvocation invocation) throws Exception {
+    public String intercept(ActionInvocation invocation) {
         Object action = invocation.getAction();
         if (PaginateActionSupport.class.isInstance(action)) {
-            try {
-                PaginateActionSupport actionSupport = (PaginateActionSupport) action;
-                setPaginaterParameters(actionSupport.getPaginater());
-            } catch (Exception e) {
-                logger.info("Error during parse paginater parameters", e);
-            }
+            PaginateActionSupport actionSupport = (PaginateActionSupport) action;
+            setPaginaterParameters(actionSupport.getPaginater());
         }
-        return invocation.invoke();
+        try {
+            return invocation.invoke();
+        } catch (Exception e) {
+            logger.error("InitializePaginaterInterceptor intercept error", e);
+            return null;
+        }
     }
 
     public void setPaginaterParameters(Paginater paginater) {

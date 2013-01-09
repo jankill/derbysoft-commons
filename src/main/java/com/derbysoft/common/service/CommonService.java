@@ -1,8 +1,8 @@
 package com.derbysoft.common.service;
 
+import com.derbysoft.common.paginater.Paginater;
 import com.derbysoft.common.repository.CommonRepository;
 import com.derbysoft.common.util.ReflectionUtils;
-import com.derbysoft.common.paginater.Paginater;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
@@ -12,14 +12,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 /**
- * @since 2009-3-19
  * @author zhupan
  * @version 1.0
+ * @since 2009-3-19
  */
 public abstract class CommonService<T> {
 
-    @Autowired
+    @Autowired(required = false)
     @Qualifier("commonRepository")
     protected CommonRepository commonRepository;
 
@@ -101,6 +102,21 @@ public abstract class CommonService<T> {
         }
     }
 
+    protected void like(DetachedCriteria detachedCriteria, String property, Object value) {
+        if (value == null) {
+            return;
+        }
+        if (String.class.isInstance(value) && StringUtils.isBlank((String) value)) {
+            return;
+        }
+        if (String.class.isInstance(value)) {
+            detachedCriteria.add(Restrictions.like(property, StringUtils.trim((String) value), MatchMode.ANYWHERE));
+        } else {
+            detachedCriteria.add(Restrictions.like(property, value));
+        }
+    }
+
+
     protected void ilike(DetachedCriteria detachedCriteria, String property, Object value) {
         if (value == null) {
             return;
@@ -111,7 +127,7 @@ public abstract class CommonService<T> {
         if (String.class.isInstance(value)) {
             detachedCriteria.add(Restrictions.ilike(property, StringUtils.trim((String) value), MatchMode.ANYWHERE));
         } else {
-            detachedCriteria.add(Restrictions.like(property, value));
+            detachedCriteria.add(Restrictions.ilike(property, value));
         }
     }
 
@@ -124,6 +140,20 @@ public abstract class CommonService<T> {
         }
         if (String.class.isInstance(value)) {
             detachedCriteria.add(Restrictions.not(Restrictions.ilike(property, StringUtils.trim((String) value), MatchMode.ANYWHERE)));
+        } else {
+            detachedCriteria.add(Restrictions.not(Restrictions.ilike(property, value)));
+        }
+    }
+
+    protected void notLike(DetachedCriteria detachedCriteria, String property, Object value) {
+        if (value == null) {
+            return;
+        }
+        if (String.class.isInstance(value) && StringUtils.isBlank((String) value)) {
+            return;
+        }
+        if (String.class.isInstance(value)) {
+            detachedCriteria.add(Restrictions.not(Restrictions.like(property, StringUtils.trim((String) value), MatchMode.ANYWHERE)));
         } else {
             detachedCriteria.add(Restrictions.not(Restrictions.like(property, value)));
         }

@@ -1,5 +1,8 @@
 package com.derbysoft.common.web.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,10 +11,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public abstract class Filter implements javax.servlet.Filter {
+public abstract class ServletFilter implements javax.servlet.Filter {
 
     public static final String NO_FILTER = "NO_FILTER";
 
@@ -21,10 +21,9 @@ public abstract class Filter implements javax.servlet.Filter {
 
     protected boolean suppressStackTraces;
 
-    private static final Logger LOG = LoggerFactory.getLogger(Filter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ServletFilter.class);
 
-    public final void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
-            throws ServletException, IOException {
+    public final void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
         final HttpServletResponse httpResponse = (HttpServletResponse) response;
         try {
@@ -33,17 +32,16 @@ public abstract class Filter implements javax.servlet.Filter {
             } else {
                 chain.doFilter(request, response);
             }
-        } catch (final Throwable throwable) {
-            logThrowable(throwable, httpRequest);
+        } catch (Exception e) {
+            logThrowable(e, httpRequest);
         }
     }
 
-    protected boolean filterNotDisabled(final HttpServletRequest httpRequest) {
+    protected boolean filterNotDisabled(HttpServletRequest httpRequest) {
         return httpRequest.getAttribute(NO_FILTER) == null;
     }
 
-    private void logThrowable(final Throwable throwable, final HttpServletRequest httpRequest)
-            throws ServletException, IOException {
+    private void logThrowable(Throwable throwable, HttpServletRequest httpRequest) throws ServletException, IOException {
         StringBuffer messageBuffer = new StringBuffer("Throwable thrown during doFilter on request with URI: ")
                 .append(httpRequest.getRequestURI())
                 .append(" and Query: ")
@@ -66,7 +64,6 @@ public abstract class Filter implements javax.servlet.Filter {
                 throw new ServletException(message, throwable);
             }
         } else {
-
             if (suppressStackTraces) {
                 LOG.warn(messageBuffer.append(throwable.getMessage()).append("\nTop StackTraceElement: ")
                         .append(throwable.getStackTrace()[0].toString()).toString());
@@ -75,9 +72,8 @@ public abstract class Filter implements javax.servlet.Filter {
             }
             if (throwable instanceof IOException) {
                 throw (IOException) throwable;
-            } else {
-                throw new ServletException(throwable);
             }
+            throw new ServletException(throwable);
         }
     }
 
@@ -110,27 +106,23 @@ public abstract class Filter implements javax.servlet.Filter {
             processInitParams(filterConfig);
 
             doInit(filterConfig);
-        } catch (final Exception e) {
+        } catch (Exception e) {
             LOG.error("Could not initialise servlet filter.", e);
             throw new ServletException("Could not initialise servlet filter.", e);
         }
     }
 
-    protected void processInitParams(final FilterConfig config) throws ServletException {
+    protected void processInitParams(FilterConfig config) throws ServletException {
         String exceptions = config.getInitParameter("exceptionsToLogDifferently");
         String level = config.getInitParameter("exceptionsToLogDifferentlyLevel");
         String suppressStackTracesString = config.getInitParameter("suppressStackTraces");
         suppressStackTraces = Boolean.valueOf(suppressStackTracesString).booleanValue();
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Suppression of stack traces enabled for " + this.getClass().getName());
-        }
+        LOG.debug("Suppression of stack traces enabled for " + this.getClass().getName());
 
         if (exceptions != null) {
             validateMandatoryParameters(exceptions, level);
             exceptionsToLogDifferently = exceptions;
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Different logging levels configured for " + this.getClass().getName());
-            }
+            LOG.debug("Different logging levels configured for " + this.getClass().getName());
         }
     }
 
@@ -147,15 +139,12 @@ public abstract class Filter implements javax.servlet.Filter {
         doDestroy();
     }
 
-    protected boolean acceptsEncoding(final HttpServletRequest request, final String name) {
-        final boolean accepts = headerContains(request, "Accept-Encoding", name);
-        return accepts;
+    protected boolean acceptsEncoding(HttpServletRequest request, String name) {
+        return headerContains(request, "Accept-Encoding", name);
     }
 
-    private boolean headerContains(final HttpServletRequest request, final String header, final String value) {
-
+    private boolean headerContains(HttpServletRequest request, String header, String value) {
         logRequestHeaders(request);
-
         final Enumeration accepted = request.getHeaders(header);
         while (accepted.hasMoreElements()) {
             final String headerValue = (String) accepted.nextElement();
@@ -166,7 +155,7 @@ public abstract class Filter implements javax.servlet.Filter {
         return false;
     }
 
-    protected void logRequestHeaders(final HttpServletRequest request) {
+    protected void logRequestHeaders(HttpServletRequest request) {
         if (LOG.isDebugEnabled()) {
             Map headers = new HashMap();
             Enumeration enumeration = request.getHeaderNames();
@@ -184,10 +173,9 @@ public abstract class Filter implements javax.servlet.Filter {
 
     protected abstract void doDestroy();
 
-    protected abstract void doFilter(final HttpServletRequest httpRequest, final HttpServletResponse httpResponse,
-                                     final FilterChain chain) throws Throwable;
+    protected abstract void doFilter(HttpServletRequest httpRequest, HttpServletResponse httpResponse, FilterChain chain) throws IOException, ServletException;
 
-    protected abstract void doInit(FilterConfig filterConfig) throws Exception;
+    protected abstract void doInit(FilterConfig filterConfig);
 
     public FilterConfig getFilterConfig() {
         return filterConfig;

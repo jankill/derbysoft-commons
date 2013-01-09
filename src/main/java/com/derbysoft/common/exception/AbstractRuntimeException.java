@@ -6,4 +6,12 @@ public abstract class AbstractRuntimeException extends RuntimeException {
         super(message);
     }
 
+    public AbstractRuntimeException(Exception e) {
+        super(e);
+    }
+
+    public AbstractRuntimeException(String message, Exception e) {
+        super(message, e);
+    }
+
 }

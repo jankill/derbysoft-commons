@@ -20,7 +20,7 @@ public abstract class BaseAction extends ActionSupport implements SessionAware, 
     protected Map session;
 
     @Override
-    public void prepare() throws Exception {
+    public void prepare() {
     }
 
     @Action("save-init")
@@ -53,7 +53,7 @@ public abstract class BaseAction extends ActionSupport implements SessionAware, 
             return parameter.toString();
         }
         Object[] parameters = (Object[]) parameter;
-        if (parameters == null || parameters.length == 0) {
+        if (parameters.length == 0) {
             return null;
         }
         return parameters[0].toString();

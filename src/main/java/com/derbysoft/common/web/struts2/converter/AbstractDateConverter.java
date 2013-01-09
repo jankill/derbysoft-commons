@@ -30,7 +30,7 @@ public abstract class AbstractDateConverter extends StrutsTypeConverter {
 
         try {
             return getDateFormat().parse(content);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             String message = "Failed convert string [" + content + "] to date use format [" + getDateFormat() + "]";
             logger.error(message, t);
             throw new TypeConversionException(message, t);

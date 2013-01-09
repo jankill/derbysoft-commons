@@ -28,7 +28,7 @@ public abstract class ValueObject implements Serializable, Cloneable {
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
         return SerializationUtils.clone(this);
     }
 

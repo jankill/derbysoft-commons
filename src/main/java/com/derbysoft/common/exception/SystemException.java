@@ -6,5 +6,11 @@ public class SystemException extends AbstractRuntimeException {
         super(message);
     }
 
+    public SystemException(Exception e) {
+        super(e);
+    }
 
+    public SystemException(String message, Exception e) {
+        super(message, e);
+    }
 }

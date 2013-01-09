@@ -5,10 +5,11 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.convention.annotation.Action;
+
 /**
- * @since 2009-3-19
  * @author zhupan
  * @version 1.0
+ * @since 2009-3-19
  */
 public abstract class PaginateActionSupport extends ActionSupport {
 
@@ -18,7 +19,7 @@ public abstract class PaginateActionSupport extends ActionSupport {
 
     @Action("execute")
     @Override
-    public String execute() throws Exception {
+    public String execute() {
         return SUCCESS;
     }
 

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.*;
 import java.util.*;
 
-public class GenericResponseWrapper extends HttpServletResponseWrapper implements Serializable {
+public class GenericResponseWrapper extends HttpServletResponseWrapper {
 
     private int statusCode = SC_OK;
     private int contentLength;
@@ -18,7 +18,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper implement
     private PrintWriter writer;
     private boolean disableFlushBuffer = true;
 
-    public GenericResponseWrapper(final HttpServletResponse response, final OutputStream outstr) {
+    public GenericResponseWrapper(HttpServletResponse response, OutputStream outstr) {
         super(response);
         this.outstr = new FilterServletOutputStream(outstr);
     }
@@ -27,7 +27,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper implement
         return outstr;
     }
 
-    public void setStatus(final int code) {
+    public void setStatus(int code) {
         statusCode = code;
         super.setStatus(code);
     }
@@ -51,7 +51,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper implement
         return statusCode;
     }
 
-    public void setContentLength(final int length) {
+    public void setContentLength(int length) {
         this.contentLength = length;
         super.setContentLength(length);
     }
@@ -60,7 +60,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper implement
         return contentLength;
     }
 
-    public void setContentType(final String type) {
+    public void setContentType(String type) {
         this.contentType = type;
         super.setContentType(type);
     }
@@ -158,6 +158,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper implement
         return headers;
     }
 
+    @Override
     public void addCookie(final Cookie cookie) {
         cookies.add(cookie);
         super.addCookie(cookie);
@@ -167,6 +168,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper implement
         return cookies;
     }
 
+    @Override
     public void flushBuffer() throws IOException {
         flush();
         if (!disableFlushBuffer) {
@@ -174,6 +176,7 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper implement
         }
     }
 
+    @Override
     public void reset() {
         super.reset();
         cookies.clear();
@@ -181,10 +184,6 @@ public class GenericResponseWrapper extends HttpServletResponseWrapper implement
         statusCode = SC_OK;
         contentType = null;
         contentLength = 0;
-    }
-
-    public void resetBuffer() {
-        super.resetBuffer();
     }
 
     public void flush() throws IOException {

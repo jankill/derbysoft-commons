@@ -7,7 +7,9 @@ import java.io.*;
  * @version 1.0
  * @since 2009-5-25
  */
-public class CloneUtils {
+public abstract class CloneUtils {
+
+    private static final int BYTE_SIZE = 512;
 
     public static <T extends Serializable> T clone(T object) {
         if (object == null) {
@@ -19,20 +21,19 @@ public class CloneUtils {
         ClassLoaderAwareObjectInputStream in = null;
         try {
             in = new ClassLoaderAwareObjectInputStream(bais, object.getClass().getClassLoader());
-            T readObject = (T) in.readObject();
-            return readObject;
+            return (T) in.readObject();
 
         } catch (ClassNotFoundException ex) {
-            throw new RuntimeException("ClassNotFoundException while reading cloned object data", ex);
+            throw new CloneException("ClassNotFoundException while reading cloned object data", ex);
         } catch (IOException ex) {
-            throw new RuntimeException("IOException while reading cloned object data", ex);
+            throw new CloneException("IOException while reading cloned object data", ex);
         } finally {
             try {
                 if (in != null) {
                     in.close();
                 }
             } catch (IOException ex) {
-                throw new RuntimeException("IOException on closing cloned object data InputStream.", ex);
+                throw new CloneException("IOException on closing cloned object data InputStream.", ex);
             }
         }
     }
@@ -75,7 +76,7 @@ public class CloneUtils {
     }
 
     public static byte[] serialize(Serializable obj) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(512);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(BYTE_SIZE);
         serialize(obj, baos);
         return baos.toByteArray();
     }
@@ -91,13 +92,13 @@ public class CloneUtils {
             out.writeObject(obj);
 
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            throw new CloneException("IOException", ex);
         } finally {
             try {
                 if (out != null) {
                     out.close();
                 }
-            } catch (IOException ex) { // NOPMD
+            } catch (IOException ex) {
                 // ignore close exception
             }
         }
@@ -111,7 +112,7 @@ public class CloneUtils {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
             return new ObjectInputStream(byteArrayInputStream).readObject();
         } catch (Exception e) {
-            throw new RuntimeException("clone object error", e);
+            throw new CloneException("clone object error", e);
         }
     }
 }

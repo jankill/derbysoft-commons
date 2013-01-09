@@ -1,5 +1,7 @@
 package com.derbysoft.common.util.date;
 
+import com.derbysoft.common.exception.SystemException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -7,8 +9,8 @@ import java.util.Date;
 
 public abstract class Dates {
 
-    private static ThreadLocal threadLocal = new ThreadLocal() {
-        protected synchronized Object initialValue() {
+    private static ThreadLocal<SimpleDateFormat> threadLocal = new ThreadLocal<SimpleDateFormat>() {
+        protected synchronized SimpleDateFormat initialValue() {
             return new SimpleDateFormat("yyyy-MM-dd");
         }
     };
@@ -17,7 +19,7 @@ public abstract class Dates {
         try {
             return getDayFormatter().parse(date);
         } catch (ParseException e) {
-            throw new RuntimeException("parse date [" + date + "] failed in use [" + getDayFormatter() + "]", e);
+            throw new SystemException("parse date [" + date + "] failed in use [" + getDayFormatter() + "]", e);
         }
     }
 
@@ -26,7 +28,7 @@ public abstract class Dates {
     }
 
     public static SimpleDateFormat getDayFormatter() {
-        return (SimpleDateFormat) threadLocal.get();
+        return threadLocal.get();
     }
 
     public static Date addDays(Date date, int value) {

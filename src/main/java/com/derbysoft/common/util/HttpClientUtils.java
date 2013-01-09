@@ -12,11 +12,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 /**
- * @since 2009-5-25
  * @author zhupan
  * @version 1.0
+ * @since 2009-5-25
  */
-public class HttpClientUtils {
+public abstract class HttpClientUtils {
 
     private static Log logger = LogFactory.getLog(HttpClientUtils.class);
 
@@ -28,7 +28,7 @@ public class HttpClientUtils {
             HttpResponse httpResponse = httpclient.execute(httpPost);
             response = EntityUtils.toString(httpResponse.getEntity(), Consts.UTF_8);
         } catch (Exception e) {
-            logger.error(e);
+            logger.error("HttpClientUtils getResult error", e);
         } finally {
             httpclient.getConnectionManager().shutdown();
         }

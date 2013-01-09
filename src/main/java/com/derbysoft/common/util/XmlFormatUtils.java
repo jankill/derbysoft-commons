@@ -1,5 +1,7 @@
 package com.derbysoft.common.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
@@ -7,12 +9,15 @@ import org.dom4j.io.XMLWriter;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+
 /**
- * @since 2009-5-25
  * @author zhupan
  * @version 1.0
+ * @since 2009-5-25
  */
-public class XmlFormatUtils {
+public abstract class XmlFormatUtils {
+
+    private static Log logger = LogFactory.getLog(XmlFormatUtils.class);
 
     public static String formatXml(String value) {
         if (value == null || "".equals(value.trim())) {
@@ -31,6 +36,7 @@ public class XmlFormatUtils {
             formatXml = stringWriter.toString();
             writer.close();
         } catch (Exception e) {
+            logger.error("XmlFormatUtils formatXml error", e);
             return formatXml;
         }
         return formatXml.trim();

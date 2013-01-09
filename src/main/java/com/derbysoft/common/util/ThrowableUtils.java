@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
  * @version 1.1
  * @since 2012-5-25
  */
-public class ThrowableUtils {
+public abstract class ThrowableUtils {
 
     public static String getExceptionMessage(Throwable e) {
         String message = e.getMessage();
@@ -21,11 +21,11 @@ public class ThrowableUtils {
     }
 
     public static String getOriginalExceptionMessage(Throwable e) {
-        return getExceptionMessage(ThrowableUtils.getOriginalException(e));
+        return getExceptionMessage(getOriginalException(e));
     }
 
-    public static String getStackTrace(Throwable e) {
-        e = getOriginalException(e);
+    public static String getStackTrace(Throwable throwable) {
+        Throwable e = getOriginalException(throwable);
         Writer writer = new StringWriter();
         PrintWriter printWriter = new PrintWriter(writer);
         e.printStackTrace(printWriter);
@@ -33,25 +33,23 @@ public class ThrowableUtils {
     }
 
     public static Throwable getOriginalException(Throwable throwable) {
-        throwable = getTargetException(throwable);
-        return getCauseException(throwable);
+        return getCauseException(getTargetException(throwable));
     }
 
     public static Throwable getCauseException(Throwable throwable) {
-        if (throwable instanceof InvocationTargetException) {
-            throwable = ((InvocationTargetException) throwable).getTargetException();
-        }
         if (throwable.getCause() == null || throwable == throwable.getCause()) {
             return throwable;
+        }
+        if (throwable instanceof InvocationTargetException) {
+            return getCauseException(((InvocationTargetException) throwable).getTargetException());
         }
         return getCauseException(throwable.getCause());
     }
 
     public static Throwable getTargetException(Throwable throwable) {
-        if (throwable instanceof InvocationTargetException) {
-            throwable = ((InvocationTargetException) throwable).getTargetException();
-            return getTargetException(throwable);
+        if (!(throwable instanceof InvocationTargetException)) {
+            return throwable;
         }
-        return throwable;
+        return getTargetException(((InvocationTargetException) throwable).getTargetException());
     }
 }
