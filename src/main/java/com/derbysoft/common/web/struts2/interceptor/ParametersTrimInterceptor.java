@@ -1,5 +1,6 @@
 package com.derbysoft.common.web.struts2.interceptor;
 
+import com.derbysoft.common.exception.SystemException;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
@@ -20,15 +21,15 @@ public class ParametersTrimInterceptor extends AbstractInterceptor {
     private static final String BLANK = "";
 
     @Override
-    public String intercept(ActionInvocation invocation) throws Exception {
+    public String intercept(ActionInvocation invocation) {
         Object action = invocation.getAction();
         if (action instanceof NoParameters) {
-            return invocation.invoke();
+            return invoke(invocation);
         }
         ActionContext actionContext = invocation.getInvocationContext();
         Map<String, Object> parameters = actionContext.getParameters();
         if (parameters == null) {
-            return invocation.invoke();
+            return invoke(invocation);
         }
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             if (entry.getValue() == null || !String[].class.isAssignableFrom(entry.getValue().getClass())) {
@@ -48,6 +49,14 @@ public class ParametersTrimInterceptor extends AbstractInterceptor {
             }
             parameters.put(entry.getKey(), result.toArray(new String[result.size()]));
         }
-        return invocation.invoke();
+        return invoke(invocation);
+    }
+
+    private String invoke(ActionInvocation invocation) {
+        try {
+            return invocation.invoke();
+        } catch (Exception e) {
+            throw new SystemException(e);
+        }
     }
 }
