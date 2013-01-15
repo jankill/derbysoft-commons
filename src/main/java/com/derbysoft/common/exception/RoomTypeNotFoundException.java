@@ -6,5 +6,12 @@ public class RoomTypeNotFoundException extends AbstractRuntimeException {
         super(message);
     }
 
+    public RoomTypeNotFoundException(Exception e) {
+        super(e);
+    }
+
+    public RoomTypeNotFoundException(String message, Exception e) {
+        super(message, e);
+    }
 
 }

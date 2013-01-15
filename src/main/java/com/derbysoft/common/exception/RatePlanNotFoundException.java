@@ -6,4 +6,13 @@ public class RatePlanNotFoundException extends AbstractRuntimeException {
         super(message);
     }
 
+    public RatePlanNotFoundException(Exception e) {
+        super(e);
+    }
+
+    public RatePlanNotFoundException(String message, Exception e) {
+        super(message, e);
+    }
+
+
 }

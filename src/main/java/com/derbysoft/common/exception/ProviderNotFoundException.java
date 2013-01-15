@@ -6,4 +6,13 @@ public class ProviderNotFoundException extends AbstractRuntimeException {
         super(message);
     }
 
+    public ProviderNotFoundException(Exception e) {
+        super(e);
+    }
+
+    public ProviderNotFoundException(String message, Exception e) {
+        super(message, e);
+    }
+
+
 }

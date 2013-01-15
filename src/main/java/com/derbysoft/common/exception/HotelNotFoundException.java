@@ -6,4 +6,12 @@ public class HotelNotFoundException extends AbstractRuntimeException {
         super(message);
     }
 
+    public HotelNotFoundException(Exception e) {
+        super(e);
+    }
+
+    public HotelNotFoundException(String message, Exception e) {
+        super(message, e);
+    }
+
 }

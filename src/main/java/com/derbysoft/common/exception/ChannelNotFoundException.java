@@ -6,4 +6,12 @@ public class ChannelNotFoundException extends AbstractRuntimeException {
         super(message);
     }
 
+    public ChannelNotFoundException(Exception e) {
+        super(e);
+    }
+
+    public ChannelNotFoundException(String message, Exception e) {
+        super(message, e);
+    }
+
 }

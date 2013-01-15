@@ -6,4 +6,12 @@ public class CancelPolicyNotFoundException extends AbstractRuntimeException {
         super(message);
     }
 
+    public CancelPolicyNotFoundException(Exception e) {
+        super(e);
+    }
+
+    public CancelPolicyNotFoundException(String message, Exception e) {
+        super(message, e);
+    }
+
 }

@@ -6,8 +6,6 @@ import com.derbysoft.common.web.struts2.support.PaginateActionSupport;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2009-3-19
  */
 public class InitializePaginaterInterceptor extends AbstractInterceptor {
-
-    private Log logger = LogFactory.getLog(InitializePaginaterInterceptor.class);
 
     private static final String PAGE_NO = "page";
 
