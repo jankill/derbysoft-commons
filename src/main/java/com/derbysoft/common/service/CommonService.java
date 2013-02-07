@@ -43,16 +43,33 @@ public abstract class CommonService<T> {
         return commonRepository.load(clazz, propertyNames, properties);
     }
 
+    public T load(DetachedCriteria criteria) {
+        return commonRepository.load(criteria);
+    }
+
     public List<T> loadAll() {
         return commonRepository.loadAll(clazz);
+    }
+
+    public List<T> find(String propertyName, Object propertyValue) {
+        return commonRepository.find(clazz, new String[]{propertyName}, new Object[]{propertyValue});
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public List<T> find(String[] propertyNames, Object[] propertyValues) {
+        return commonRepository.find(clazz, propertyNames, propertyValues);
     }
 
     public List<T> find(DetachedCriteria criteria) {
         return commonRepository.find(criteria);
     }
 
-    public List find(String queryString, Object... values) {
-        return commonRepository.find(queryString, values);
+    public List<T> find(DetachedCriteria detachedCriteria, Integer firstResult, Integer maxResults) {
+        return commonRepository.find(detachedCriteria, firstResult, maxResults);
+    }
+
+    public List findByQuery(String queryString, Object... values) {
+        return commonRepository.findByQuery(queryString, values);
     }
 
     @Transactional(readOnly = false)

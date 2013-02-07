@@ -1,8 +1,8 @@
 package com.derbysoft.common.web.filter.support;
 
 import com.derbysoft.common.exception.SystemException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +11,7 @@ import java.util.Collection;
 
 public abstract class ResponseUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ResponseUtil.class);
+    private static final Log LOG = LogFactory.getLog(ResponseUtil.class);
 
     private static final int EMPTY_GZIPPED_CONTENT_SIZE = 20;
 

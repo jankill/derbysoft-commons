@@ -37,9 +37,8 @@ public abstract class XmlFormatUtils {
             writer.close();
         } catch (Exception e) {
             logger.error("XmlFormatUtils formatXml error", e);
-            return formatXml;
         }
-        return formatXml.trim();
+        return formatXml;
     }
 
 }

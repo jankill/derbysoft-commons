@@ -7,6 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.*;
 import org.hibernate.internal.CriteriaImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.Serializable;
 import java.util.List;
@@ -34,15 +36,15 @@ public class CommonRepository {
         return (T) createQuery(clazz, propertyNames, propertyValues).uniqueResult();
     }
 
-    public Object load(DetachedCriteria criteria) {
-        return createCriteria(criteria).uniqueResult();
+    public <T> T load(DetachedCriteria criteria) {
+        return (T) createCriteria(criteria).uniqueResult();
     }
 
     public List find(DetachedCriteria criteria) {
         return createCriteria(criteria).list();
     }
 
-    public List find(String queryString, Object... values) {
+    public List findByQuery(String queryString, Object... values) {
         return createQuery(queryString, values).list();
     }
 
@@ -55,7 +57,7 @@ public class CommonRepository {
         return createQuery(clazz, propertyNames, propertyValues).list();
     }
 
-    public <T> List<T> loadAll(final Class<T> entityClass) {
+    public <T> List<T> loadAll(Class<T> entityClass) {
         Criteria criteria = getSession().createCriteria(entityClass);
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return criteria.list();
@@ -102,7 +104,7 @@ public class CommonRepository {
         return (Long) count;
     }
 
-    protected Session getSession() {
+    public Session getSession() {
         return sessionFactory.getCurrentSession();
     }
 
@@ -122,7 +124,7 @@ public class CommonRepository {
 
     private String createQueryString(Class<?> clazz, String[] propertyNames) {
         String hql = "from " + clazz.getSimpleName() + " _alias";
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if (propertyNames != null) {
             for (String propertyName : propertyNames) {
                 sb.append(" _alias.").append(propertyName).append(" = :").append(propertyName).append(" and");
@@ -142,6 +144,8 @@ public class CommonRepository {
         return query;
     }
 
+    @Autowired(required = false)
+    @Qualifier("sessionFactory")
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

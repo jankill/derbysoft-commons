@@ -4,7 +4,7 @@
     <groupId>com.derbysoft</groupId>
     <artifactId>derbysoft-commons</artifactId>
     <name>derbysoft-commons</name>
-    <version>1.2</version>
+    <version>1.3</version>
     <packaging>jar</packaging>
 
     <build>
@@ -86,31 +86,31 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
-            <version>3.1.2.RELEASE</version>
+            <version>3.1.4.RELEASE</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>3.1.2.RELEASE</version>
+            <version>3.1.4.RELEASE</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-            <version>3.1.2.RELEASE</version>
+            <version>3.1.4.RELEASE</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>3.1.2.RELEASE</version>
+            <version>3.1.4.RELEASE</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>4.1.5.Final</version>
+            <version>4.1.9.Final</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -126,9 +126,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.6</version>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

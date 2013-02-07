@@ -2,8 +2,8 @@ package com.derbysoft.common.web.filter;
 
 import com.derbysoft.common.web.filter.support.GenericResponseWrapper;
 import com.derbysoft.common.web.filter.support.ResponseUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -16,7 +16,7 @@ import java.util.zip.GZIPOutputStream;
 
 public class GzipFilter extends ServletFilter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GzipFilter.class);
+    private static final Log LOG = LogFactory.getLog(GzipFilter.class);
     private static final String VARY_HEADER_PARAM = "varyHeader";
 
     private boolean setVaryHeader;

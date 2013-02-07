@@ -2,8 +2,9 @@ package com.derbysoft.common.domain;
 
 import com.derbysoft.common.util.CloneUtils;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 import java.util.Date;
 
 /**
@@ -12,28 +13,13 @@ import java.util.Date;
  * @since 2009-3-19
  */
 @MappedSuperclass
-public abstract class PersistenceSupport implements Serializable {
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @Column(name = "create_time")
-    private Date createTime;
+public abstract class PersistenceSupport extends BasePersistenceSupport {
 
     @Column(name = "last_modify_time")
     private Date lastModifyTime;
 
     @Version
-    protected Integer version;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Integer version;
 
     public Integer getVersion() {
         return version;
@@ -41,14 +27,6 @@ public abstract class PersistenceSupport implements Serializable {
 
     public void setVersion(Integer version) {
         this.version = version;
-    }
-
-    public Date getCreateTime() {
-        return CloneUtils.clone(createTime);
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = CloneUtils.clone(createTime);
     }
 
     public Date getUpdateTime() {
@@ -65,34 +43,6 @@ public abstract class PersistenceSupport implements Serializable {
 
     public void setUpdateTime(Date lastModifyTime) {
         setLastModifyTime(lastModifyTime);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        Class<? extends PersistenceSupport> clazz = getClass();
-        if (!(clazz.isInstance(obj))) {
-            return false;
-        }
-        boolean superEquals = super.equals(obj);
-        if (superEquals) {
-            return true;
-        }
-        if (getId() == null) {
-            return false;
-        }
-        PersistenceSupport support = (PersistenceSupport) obj;
-        if (support.getId() == null) {
-            return false;
-        }
-        return getId().equals(support.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        if (getId() != null) {
-            return getId().hashCode();
-        }
-        return super.hashCode();
     }
 
 }

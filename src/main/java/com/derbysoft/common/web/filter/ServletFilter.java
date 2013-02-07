@@ -1,7 +1,7 @@
 package com.derbysoft.common.web.filter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public abstract class ServletFilter implements javax.servlet.Filter {
 
     protected boolean suppressStackTraces;
 
-    private static final Logger LOG = LoggerFactory.getLogger(ServletFilter.class);
+    private static final Log LOG = LogFactory.getLog(ServletFilter.class);
 
     public final void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
