@@ -101,7 +101,7 @@ public class HibernateInterceptor implements MethodInterceptor {
 
     protected Session openSession() {
         try {
-            Session session = SessionFactoryUtils.openSession(getSessionFactory());
+            Session session = getSessionFactory().openSession();
             session.setFlushMode(FlushMode.MANUAL);
             return session;
         } catch (HibernateException ex) {

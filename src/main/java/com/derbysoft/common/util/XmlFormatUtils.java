@@ -36,7 +36,9 @@ public abstract class XmlFormatUtils {
             formatXml = stringWriter.toString();
             writer.close();
         } catch (Exception e) {
-            logger.error("XmlFormatUtils formatXml error", e);
+            if (logger.isDebugEnabled()) {
+                logger.error("XmlFormatUtils formatXml error", e);
+            }
         }
         return formatXml;
     }
