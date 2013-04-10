@@ -28,7 +28,7 @@ public class PersistenceSupportHibernateInterceptor extends EmptyInterceptor {
                         basePersistenceSupport.setCreateTime(createTime);
                     }
                     modified = true;
-                } else if ("lastModifyTime".equals(propertyNames[i])) {
+                } else if (PersistenceSupport.class.isInstance(entity) && "lastModifyTime".equals(propertyNames[i])) {
                     Date updateTime = getCurrentTime();
                     state[i] = updateTime;
                     PersistenceSupport persistenceSupport = (PersistenceSupport) basePersistenceSupport;
