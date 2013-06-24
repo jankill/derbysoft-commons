@@ -7,9 +7,9 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.util.Assert;
 
 /**
- * @since 2009-3-19
  * @author zhupan
  * @version 1.0
+ * @since 2009-3-19
  */
 public class Exception2ReturnValueInterceptor implements MethodInterceptor {
 

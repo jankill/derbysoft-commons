@@ -2,10 +2,11 @@ package com.derbysoft.common.paginater;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
- * @since 2009-3-19
  * @author zhupan
  * @version 1.0
+ * @since 2009-3-19
  */
 public abstract class PageNoBuilder {
 

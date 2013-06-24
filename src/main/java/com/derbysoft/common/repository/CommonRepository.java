@@ -101,6 +101,9 @@ public class CommonRepository {
         Projection originalProjection = ((CriteriaImpl) criteria).getProjection();
         Object count = criteria.setProjection(Projections.countDistinct("id")).uniqueResult();
         detachedCriteria.setProjection(originalProjection);
+        if (count == null) {
+            return 0;
+        }
         return (Long) count;
     }
 

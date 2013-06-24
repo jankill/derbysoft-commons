@@ -5,9 +5,9 @@ import java.text.SimpleDateFormat;
 
 public class YYYYMMDDHHMMSSDateConverter extends AbstractDateConverter {
 
-	@Override
-	protected DateFormat getDateFormat() {
-		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-	}
+    @Override
+    protected DateFormat getDateFormat() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    }
 
 }
