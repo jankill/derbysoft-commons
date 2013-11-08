@@ -18,4 +18,13 @@ public abstract class ReflectionUtils {
         throw new SystemException(clazz.getName() + " should be parameterized!");
     }
 
+    public static Class getSuperClassGenericType(Type type) {
+        if (type instanceof ParameterizedType) {
+            return (Class) ((ParameterizedType) type).getActualTypeArguments()[0];
+        }
+        if (type instanceof Class) {
+            return getSuperClassGenericType((Class) type);
+        }
+        throw new SystemException(type.getClass().getName() + " should be parameterized!");
+    }
 }

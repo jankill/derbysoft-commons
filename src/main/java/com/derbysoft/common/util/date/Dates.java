@@ -42,6 +42,14 @@ public abstract class Dates {
         return format(addDays(of(date), day));
     }
 
+    public static Date prev(Date date) {
+        return addDays(date, -1);
+    }
+
+    public static String prev(String date) {
+        return format(prev(of(date)));
+    }
+
     public static Date next(Date date) {
         return addDays(date, 1);
     }

@@ -3,6 +3,8 @@ package com.derbysoft.common.web.struts2.support;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.interceptor.SessionAware;
 
@@ -16,6 +18,8 @@ import java.util.Map;
 public abstract class BaseAction extends ActionSupport implements SessionAware, Preparable {
 
     protected static final String LIST = "list";
+
+    protected Log logger = LogFactory.getLog(this.getClass());
 
     protected Map session;
 

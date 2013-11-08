@@ -14,6 +14,11 @@ import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @author zhupan
+ * @version 1.0
+ * @since 2009-5-25
+ */
 public abstract class ExecutorUtils {
 
     private static Log logger = LogFactory.getLog(ExecutorUtils.class);
