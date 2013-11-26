@@ -35,7 +35,7 @@ import java.util.concurrent.ConcurrentMap;
  * <p/>
  * <p/>
  */
-public abstract class AbstractTablePartitionRepository<T> implements TablePartitionRepository<T> {
+public abstract class AbstractPartitionTableRepository<T> implements PartitionTableRepository<T> {
 
     private static final ConcurrentMap<String, Boolean> EXISTED_TABLE_MAP = new ConcurrentHashMap<String, Boolean>();
 
@@ -54,7 +54,7 @@ public abstract class AbstractTablePartitionRepository<T> implements TablePartit
     private Class<T> clazz;
 
     @SuppressWarnings("unchecked")
-    public AbstractTablePartitionRepository() {
+    public AbstractPartitionTableRepository() {
         this.clazz = ReflectionUtils.getSuperClassGenericType(getClass());
     }
 

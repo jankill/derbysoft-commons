@@ -1,32 +1,10 @@
 package com.derbysoft.common.repository.partition;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-public abstract class PartitionByHourRepository<T> extends AbstractTablePartitionRepository<T> {
+public abstract class PartitionByHourRepository<T> extends PartitionByDateRepository<T> {
 
     @Override
-    protected String getTableSuffixForSave(T t) {
-        return DateTimeUtils.formatDate(DateTimeUtils.today());
+    public String getDateFormat() {
+        return "yyyyMMddHH";
     }
 
-    private static class DateTimeUtils {
-        private static ThreadLocal<SimpleDateFormat> threadLocal = new ThreadLocal<SimpleDateFormat>() {
-            protected synchronized SimpleDateFormat initialValue() {
-                return new SimpleDateFormat("yyyyMMddHH");
-            }
-        };
-
-        private static SimpleDateFormat getDayFormatter() {
-            return threadLocal.get();
-        }
-
-        public static String formatDate(Date date) {
-            return getDayFormatter().format(date);
-        }
-
-        private static Date today() {
-            return new Date();
-        }
-    }
 }

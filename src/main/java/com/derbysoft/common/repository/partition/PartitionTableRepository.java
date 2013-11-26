@@ -5,7 +5,7 @@ import org.hibernate.criterion.DetachedCriteria;
 
 import java.util.List;
 
-public interface TablePartitionRepository<T> {
+public interface PartitionTableRepository<T> {
 
     T save(T log);
 
