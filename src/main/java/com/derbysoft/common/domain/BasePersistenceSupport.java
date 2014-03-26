@@ -21,7 +21,7 @@ public abstract class BasePersistenceSupport implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "create_time")
+    @Column
     private Date createTime;
 
     public Long getId() {

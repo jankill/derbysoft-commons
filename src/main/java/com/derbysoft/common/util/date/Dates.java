@@ -1,6 +1,7 @@
 package com.derbysoft.common.util.date;
 
 import com.derbysoft.common.exception.SystemException;
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,6 +18,9 @@ public abstract class Dates {
 
     public static Date of(String date) {
         try {
+            if (StringUtils.isBlank(date)) {
+                return null;
+            }
             return getDayFormatter().parse(date);
         } catch (ParseException e) {
             throw new SystemException("parse date [" + date + "] failed in use [" + getDayFormatter() + "]", e);
@@ -24,6 +28,9 @@ public abstract class Dates {
     }
 
     public static String format(Date date) {
+        if (date == null) {
+            return null;
+        }
         return getDayFormatter().format(date);
     }
 
@@ -32,6 +39,9 @@ public abstract class Dates {
     }
 
     public static Date addDays(Date date, int value) {
+        if (date == null) {
+            return null;
+        }
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.DATE, value);

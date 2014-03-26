@@ -15,7 +15,7 @@ import java.util.Date;
 @MappedSuperclass
 public abstract class PersistenceSupport extends BasePersistenceSupport {
 
-    @Column(name = "last_modify_time")
+    @Column
     private Date lastModifyTime;
 
     @Version

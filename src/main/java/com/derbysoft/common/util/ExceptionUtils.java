@@ -13,12 +13,17 @@ import java.util.List;
 
 public class ExceptionUtils {
     final static String EOL = "\n";
-    public static final String PROPERTY_KEY = "com.derbysoft.common.util.ExceptionUtils.keyWords";
+    public static final String KEY_WORDS_KEY = "com.derbysoft.common.util.ExceptionUtils.keyWords";
     public static final List<String> DEFAULT_KEY_WORDS = Arrays.asList("com.derbysoft");
-    public static final String SEPARATOR = ",";
 
-    public static final String[] SEARCH_LIST = new String[]{";", " "};
-    public static final String[] REPLACEMENT_LIST = new String[]{SEPARATOR, SEPARATOR};
+    public static final String MIN_LINE_COUNT_KEY = "com.derbysoft.common.util.ExceptionUtils.minLineCount";
+    public static final int DEFAULT_MIN_LINE_COUNT = 3;
+
+    public static final String MAX_LINE_COUNT_KEY = "com.derbysoft.common.util.ExceptionUtils.maxLineCount";
+    public static final int DEFAULT_MAX_LINE_COUNT = 20;
+
+
+    public static final String SEPARATOR = ",";
 
     public static String toString(Exception exception) {
         return toString(exception, getKeyWords());
@@ -32,16 +37,24 @@ public class ExceptionUtils {
             StringBuilder sb = new StringBuilder();
             sb.append(reader.readLine());
 
+            int lineCount = 1;
+            int minLineCount = getMinLineCount();
+            int maxLineCount = getMaxLineCount();
             while (true) {
                 String line = reader.readLine();
-                if (line == null) {
+                if (line == null || lineCount >= maxLineCount) {
                     break;
                 }
 
+                if (lineCount < minLineCount) {
+                    lineCount++;
+                    sb.append(EOL).append(line);
+                    continue;
+                }
                 if (!containsAny(line, keyWords)) {
                     continue;
                 }
-
+                lineCount++;
                 sb.append(EOL).append(line);
             }
             return sb.toString();
@@ -51,6 +64,9 @@ public class ExceptionUtils {
     }
 
     private static boolean containsAny(String line, Collection<String> keyWords) {
+        if (CollectionsUtils.isEmpty(keyWords)) {
+            return true;
+        }
         for (String keyWord : keyWords) {
             if (line.contains(keyWord)) {
                 return true;
@@ -60,18 +76,40 @@ public class ExceptionUtils {
     }
 
     private static Collection<String> getKeyWords() {
-        if (System.getProperties().containsKey(PROPERTY_KEY)) {
+        if (System.getProperties().containsKey(KEY_WORDS_KEY)) {
             List<String> keyWords = new ArrayList<String>();
-            String property = StringUtils.replaceEach(System.getProperty(PROPERTY_KEY), SEARCH_LIST, REPLACEMENT_LIST);
+            String property = StringUtils.trimToEmpty(System.getProperty(KEY_WORDS_KEY));
             for (String value : StringUtils.split(property, SEPARATOR)) {
                 if (StringUtils.isBlank(value)) {
-                      continue;
+                    continue;
                 }
                 keyWords.add(value);
             }
             return keyWords;
         } else {
             return DEFAULT_KEY_WORDS;
+        }
+    }
+
+    public static int getMinLineCount() {
+        try {
+            if (System.getProperties().containsKey(MIN_LINE_COUNT_KEY)) {
+                return Integer.parseInt(System.getProperty(MIN_LINE_COUNT_KEY));
+            }
+            return DEFAULT_MIN_LINE_COUNT;
+        } catch (Exception e) {
+            return DEFAULT_MIN_LINE_COUNT;
+        }
+    }
+
+    public static int getMaxLineCount() {
+        try {
+            if (System.getProperties().containsKey(MAX_LINE_COUNT_KEY)) {
+                return Integer.parseInt(System.getProperty(MAX_LINE_COUNT_KEY));
+            }
+            return DEFAULT_MAX_LINE_COUNT;
+        } catch (Exception e) {
+            return DEFAULT_MAX_LINE_COUNT;
         }
     }
 }

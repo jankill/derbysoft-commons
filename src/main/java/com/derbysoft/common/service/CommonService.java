@@ -176,7 +176,7 @@ public abstract class CommonService<T> {
         }
     }
 
-    public void lt(DetachedCriteria detachedCriteria, String property, Object value) {
+    protected void lt(DetachedCriteria detachedCriteria, String property, Object value) {
         if (value == null) {
             return;
         }
@@ -190,7 +190,7 @@ public abstract class CommonService<T> {
         }
     }
 
-    public void le(DetachedCriteria detachedCriteria, String property, Object value) {
+    protected void le(DetachedCriteria detachedCriteria, String property, Object value) {
         if (value == null) {
             return;
         }
@@ -205,7 +205,7 @@ public abstract class CommonService<T> {
     }
 
 
-    public void gt(DetachedCriteria detachedCriteria, String property, Object value) {
+    protected void gt(DetachedCriteria detachedCriteria, String property, Object value) {
         if (value == null) {
             return;
         }
@@ -219,7 +219,7 @@ public abstract class CommonService<T> {
         }
     }
 
-    public void ge(DetachedCriteria detachedCriteria, String property, Object value) {
+    protected void ge(DetachedCriteria detachedCriteria, String property, Object value) {
         if (value == null) {
             return;
         }

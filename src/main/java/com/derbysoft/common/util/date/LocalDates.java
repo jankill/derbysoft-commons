@@ -75,7 +75,7 @@ public abstract class LocalDates {
     }
 
     public static String format(LocalDate date) {
-        return date.toString(YYYY_MM_DD);
+        return date.toString();
     }
 
     public static String format(Date date) {
@@ -137,5 +137,4 @@ public abstract class LocalDates {
     public static List<LocalDate> getDateRangeDays(LocalDate startDate, LocalDate endDate) {
         return getStayDateRangeDays(startDate, next(endDate));
     }
-
 }
