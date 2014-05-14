@@ -152,6 +152,8 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
 
     @Override
     public Paginater paginate(String suffix, DetachedCriteria detachedCriteria, Paginater paginater) {
+        sort(detachedCriteria, paginater);
+
         return paginate(suffix, detachedCriteria, paginater, false);
     }
 
@@ -196,6 +198,14 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
             }
         }
         return false;
+    }
+
+    private void sort(DetachedCriteria detachedCriteria, Paginater paginater) {
+        if (StringUtils.isBlank(paginater.getSortField())) {
+            return;
+        }
+        boolean isDesc = StringUtils.equalsIgnoreCase("desc", StringUtils.trim(paginater.getSortDirection()));
+        detachedCriteria.addOrder(isDesc ? Order.desc(paginater.getSortField()) : Order.asc(paginater.getSortField()));
     }
 
     protected void createTableIfNotExisted(String suffix) {
@@ -359,6 +369,7 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
     }
 
     private final class SelectInterceptor extends EmptyInterceptor {
+
         private String suffix;
 
         private SelectInterceptor(String suffix) {

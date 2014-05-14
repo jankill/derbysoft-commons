@@ -1,6 +1,7 @@
 package com.derbysoft.common.repository;
 
 import com.derbysoft.common.paginater.Paginater;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -76,7 +77,7 @@ public class CommonRepository {
         return criteria.setFirstResult(firstResult).setMaxResults(maxResults).list();
     }
 
-    public Paginater paginater(DetachedCriteria detachedCriteria, Paginater paginater) {
+    public Paginater paginate(DetachedCriteria detachedCriteria, Paginater paginater) {
         sort(detachedCriteria, paginater);
         paginater.setTotalCount(count(detachedCriteria));
         Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
@@ -88,12 +89,17 @@ public class CommonRepository {
         return paginater;
     }
 
+    @Deprecated
+    public Paginater paginater(DetachedCriteria detachedCriteria, Paginater paginater) {
+        return paginate(detachedCriteria, paginater);
+    }
+
     private void sort(DetachedCriteria detachedCriteria, Paginater paginater) {
-        if (paginater.getSortField() != null && !paginater.getSortField().trim().equals("") && "desc".equalsIgnoreCase(paginater.getSortDirection())) {
-            detachedCriteria.addOrder(Order.desc(paginater.getSortField()));
-        } else if (paginater.getSortField() != null && !paginater.getSortField().trim().equals("")) {
-            detachedCriteria.addOrder(Order.asc(paginater.getSortField()));
+        if (StringUtils.isBlank(paginater.getSortField())) {
+            return;
         }
+        boolean isDesc = StringUtils.equalsIgnoreCase("desc", StringUtils.trim(paginater.getSortDirection()));
+        detachedCriteria.addOrder(isDesc ? Order.desc(paginater.getSortField()) : Order.asc(paginater.getSortField()));
     }
 
     private long count(DetachedCriteria detachedCriteria) {

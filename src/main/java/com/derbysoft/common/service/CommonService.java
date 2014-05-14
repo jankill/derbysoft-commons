@@ -83,12 +83,22 @@ public abstract class CommonService<T> {
         commonRepository.delete(o);
     }
 
-    public Paginater paginater(Paginater paginater) {
-        return paginater(DetachedCriteria.forClass(clazz), paginater);
+    public Paginater paginate(Paginater paginater) {
+        return paginate(DetachedCriteria.forClass(clazz), paginater);
     }
 
+    public Paginater paginate(DetachedCriteria detachedCriteria, Paginater paginater) {
+        return commonRepository.paginate(detachedCriteria, paginater);
+    }
+
+    @Deprecated
+    public Paginater paginater(Paginater paginater) {
+        return paginate(DetachedCriteria.forClass(clazz), paginater);
+    }
+
+    @Deprecated
     public Paginater paginater(DetachedCriteria detachedCriteria, Paginater paginater) {
-        return commonRepository.paginater(detachedCriteria, paginater);
+        return commonRepository.paginate(detachedCriteria, paginater);
     }
 
     protected void eq(DetachedCriteria detachedCriteria, String property, Object value) {
