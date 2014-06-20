@@ -18,6 +18,7 @@ import java.util.List;
  * @version 1.0
  * @since 2009-3-19
  */
+@SuppressWarnings({"unchecked"})
 public abstract class CommonService<T> {
 
     @Autowired(required = false)
@@ -26,7 +27,6 @@ public abstract class CommonService<T> {
 
     private Class<T> clazz;
 
-    @SuppressWarnings({"unchecked"})
     public CommonService() {
         this.clazz = ReflectionUtils.getSuperClassGenericType(getClass());
     }
@@ -55,7 +55,6 @@ public abstract class CommonService<T> {
         return commonRepository.find(clazz, new String[]{propertyName}, new Object[]{propertyValue});
     }
 
-    @SuppressWarnings({"unchecked"})
     public List<T> find(String[] propertyNames, Object[] propertyValues) {
         return commonRepository.find(clazz, propertyNames, propertyValues);
     }

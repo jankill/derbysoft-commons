@@ -1,6 +1,6 @@
 package com.derbysoft.common;
 
-import com.derbysoft.common.util.XStreamFactory;
+import com.derbysoft.common.factory.XStreamFactory;
 import com.thoughtworks.xstream.XStream;
 
 import static org.junit.Assert.assertEquals;

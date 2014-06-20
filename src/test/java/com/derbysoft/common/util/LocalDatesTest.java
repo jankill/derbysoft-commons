@@ -5,9 +5,11 @@ import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author zhupan
@@ -34,4 +36,10 @@ public class LocalDatesTest {
         return dates;
     }
 
+    @Test
+    public void testIsDateInRange() {
+        assertTrue(LocalDates.isDateInRange("2013-01-10", "2013-01-01", "2013-01-30"));
+        assertTrue(LocalDates.isDateInRange(new Date(), LocalDates.prev(new Date()).toDate(), LocalDates.next(new Date()).toDate()));
+        assertTrue(LocalDates.isDateInRange(new LocalDate("2013-01-10"), new LocalDate("2013-01-01"), new LocalDate("2013-01-30")));
+    }
 }

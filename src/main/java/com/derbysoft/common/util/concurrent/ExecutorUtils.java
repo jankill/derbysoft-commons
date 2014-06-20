@@ -26,6 +26,9 @@ public abstract class ExecutorUtils {
     private static final long SHUT_DOWN_TIMEOUT = 1000L;
 
     public static <T> List<T> batchExecute(Executor executor, Collection<Callable<T>> tasks) {
+        if (CollectionUtils.isEmpty(tasks)) {
+            return new ArrayList<T>();
+        }
         return batchExecute(executor, tasks, false, false, false);
     }
 

@@ -42,7 +42,7 @@ public abstract class ServletFilter implements javax.servlet.Filter {
     }
 
     private void logThrowable(Throwable throwable, HttpServletRequest httpRequest) throws ServletException, IOException {
-        StringBuffer messageBuffer = new StringBuffer("Throwable thrown during doFilter on request with URI: ")
+        StringBuilder messageBuffer = new StringBuilder("Throwable thrown during doFilter on request with URI: ")
                 .append(httpRequest.getRequestURI())
                 .append(" and Query: ")
                 .append(httpRequest.getQueryString());
@@ -81,18 +81,18 @@ public abstract class ServletFilter implements javax.servlet.Filter {
         if (exceptionsToLogDifferently == null) {
             return false;
         }
-        if (exceptionsToLogDifferently.indexOf(throwable.getClass().getName()) != -1) {
+        if (exceptionsToLogDifferently.contains(throwable.getClass().getName())) {
             return true;
         }
         if (throwable instanceof ServletException) {
             Throwable rootCause = (((ServletException) throwable).getRootCause());
-            if (exceptionsToLogDifferently.indexOf(rootCause.getClass().getName()) != -1) {
+            if (exceptionsToLogDifferently.contains(rootCause.getClass().getName())) {
                 return true;
             }
         }
         if (throwable.getCause() != null) {
             Throwable cause = throwable.getCause();
-            if (exceptionsToLogDifferently.indexOf(cause.getClass().getName()) != -1) {
+            if (exceptionsToLogDifferently.contains(cause.getClass().getName())) {
                 return true;
             }
         }
@@ -116,7 +116,7 @@ public abstract class ServletFilter implements javax.servlet.Filter {
         String exceptions = config.getInitParameter("exceptionsToLogDifferently");
         String level = config.getInitParameter("exceptionsToLogDifferentlyLevel");
         String suppressStackTracesString = config.getInitParameter("suppressStackTraces");
-        suppressStackTraces = Boolean.valueOf(suppressStackTracesString).booleanValue();
+        suppressStackTraces = Boolean.valueOf(suppressStackTracesString);
         LOG.debug("Suppression of stack traces enabled for " + this.getClass().getName());
 
         if (exceptions != null) {

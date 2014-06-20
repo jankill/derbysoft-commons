@@ -102,6 +102,18 @@ public abstract class LocalDates {
         return Days.daysBetween(startDate, endDate).getDays();
     }
 
+    public static boolean isDateInRange(LocalDate date, LocalDate startDate, LocalDate endDate) {
+        return date.compareTo(startDate) >= 0 && date.compareTo(endDate) <= 0;
+    }
+
+    public static boolean isDateInRange(Date date, Date startDate, Date endDate) {
+        return date.compareTo(startDate) >= 0 && date.compareTo(endDate) <= 0;
+    }
+
+    public static boolean isDateInRange(String date, String startDate, String endDate) {
+        return date.compareTo(startDate) >= 0 && date.compareTo(endDate) <= 0;
+    }
+
     public static int daysBetween(String startDate, String endDate) {
         return daysBetween(of(startDate), of(endDate));
     }

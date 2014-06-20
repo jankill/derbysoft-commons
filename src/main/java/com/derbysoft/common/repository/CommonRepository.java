@@ -19,6 +19,7 @@ import java.util.List;
  * @version 1.0
  * @since 2009-3-19
  */
+@SuppressWarnings({"unchecked"})
 public class CommonRepository {
 
     private SessionFactory sessionFactory;
@@ -53,7 +54,6 @@ public class CommonRepository {
         return find(clazz, new String[]{propertyName}, new Object[]{propertyValue});
     }
 
-    @SuppressWarnings({"unchecked"})
     public <T> List<T> find(Class<T> clazz, String[] propertyNames, Object[] propertyValues) {
         return createQuery(clazz, propertyNames, propertyValues).list();
     }
