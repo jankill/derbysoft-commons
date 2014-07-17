@@ -1,8 +1,6 @@
 package com.derbysoft.common.util;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public abstract class CollectionsUtils extends org.apache.commons.collections.CollectionUtils {
 
@@ -31,7 +29,7 @@ public abstract class CollectionsUtils extends org.apache.commons.collections.Co
         if (isEmpty(collection)) {
             return "";
         }
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         Iterator<T> iter = collection.iterator();
         if (iter.hasNext()) {
             sb.append(iter.next());
@@ -41,5 +39,20 @@ public abstract class CollectionsUtils extends org.apache.commons.collections.Co
         }
         return sb.toString();
     }
+
+    public static Map map(Object... keyvals) {
+        if (keyvals == null) {
+            return new HashMap();
+        }
+        if (keyvals.length % 2 != 0) {
+            throw new IllegalArgumentException("Map must have an even number of elements");
+        }
+        Map m = new HashMap(keyvals.length / 2);
+        for (int i = 0; i < keyvals.length; i += 2) {
+            m.put(keyvals[i], keyvals[i + 1]);
+        }
+        return Collections.unmodifiableMap(m);
+    }
+
 
 }
