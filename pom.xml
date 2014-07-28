@@ -4,7 +4,7 @@
     <groupId>com.derbysoft</groupId>
     <artifactId>derbysoft-commons</artifactId>
     <name>derbysoft-commons</name>
-    <version>1.7</version>
+    <version>1.8</version>
     <packaging>jar</packaging>
 
     <build>
@@ -48,7 +48,7 @@
     </build>
 
     <properties>
-        <springframework.version>3.2.6.RELEASE</springframework.version>
+        <springframework.version>4.0.6.RELEASE</springframework.version>
     </properties>
 
     <dependencies>
@@ -137,9 +137,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework.ws</groupId>
+            <artifactId>spring-ws-core</artifactId>
+            <version>2.2.0.RELEASE</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>4.2.8.Final</version>
+            <version>4.3.5.Final</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -151,7 +157,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.2.1</version>
+            <version>4.3.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -164,7 +170,7 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.3</version>
-            <!--<scope>provided</scope>-->
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>

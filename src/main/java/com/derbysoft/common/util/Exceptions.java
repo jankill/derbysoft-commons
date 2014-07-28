@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
  * @version 1.1
  * @since 2012-5-25
  */
-public abstract class ThrowableUtils {
+public abstract class Exceptions {
 
     public static String getExceptionMessage(Throwable e) {
         String message = e.getMessage();
@@ -20,16 +20,34 @@ public abstract class ThrowableUtils {
         return getStackTrace(e);
     }
 
-    public static String getOriginalExceptionMessage(Throwable e) {
-        return getExceptionMessage(getOriginalException(e));
+    public static RuntimeException unchecked(Throwable ex) {
+        if (ex instanceof RuntimeException) {
+            return (RuntimeException) ex;
+        } else {
+            return new RuntimeException(ex);
+        }
     }
 
-    public static String getStackTrace(Throwable throwable) {
-        Throwable e = getOriginalException(throwable);
-        Writer writer = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(writer);
-        e.printStackTrace(printWriter);
-        return writer.toString();
+    public static String getErrorMessageWithNestedException(Throwable ex) {
+        if (ex instanceof NullPointerException) {
+            return getStackTrace(ex);
+        }
+        Throwable nestedException = ex.getCause();
+        return ex.getMessage() + " nested exception is " + nestedException.getClass().getName() + ":" + nestedException.getMessage();
+    }
+
+    public static Throwable getRootCause(Throwable ex) {
+        Throwable cause;
+        while ((cause = ex.getCause()) != null) {
+            ex = cause;
+        }
+        return ex;
+    }
+
+    public static String getStackTrace(Throwable ex) {
+        StringWriter stringWriter = new StringWriter();
+        ex.printStackTrace(new PrintWriter(stringWriter));
+        return stringWriter.toString();
     }
 
     public static Throwable getOriginalException(Throwable throwable) {

@@ -90,16 +90,6 @@ public abstract class CommonService<T> {
         return commonRepository.paginate(detachedCriteria, paginater);
     }
 
-    @Deprecated
-    public Paginater paginater(Paginater paginater) {
-        return paginate(DetachedCriteria.forClass(clazz), paginater);
-    }
-
-    @Deprecated
-    public Paginater paginater(DetachedCriteria detachedCriteria, Paginater paginater) {
-        return commonRepository.paginate(detachedCriteria, paginater);
-    }
-
     protected void eq(DetachedCriteria detachedCriteria, String property, Object value) {
         if (value == null) {
             return;

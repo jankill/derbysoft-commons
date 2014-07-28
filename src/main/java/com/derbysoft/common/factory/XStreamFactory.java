@@ -12,4 +12,10 @@ public abstract class XStreamFactory {
         xStream.registerConverter(new SerializableConverter(xStream.getMapper(), xStream.getReflectionProvider(), ClassLoader.getSystemClassLoader()), XStream.PRIORITY_LOW + 2);
         return xStream;
     }
+
+    public static XStream createNoReferences() {
+        XStream xStream = create();
+        xStream.setMode(XStream.NO_REFERENCES);
+        return xStream;
+    }
 }

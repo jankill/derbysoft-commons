@@ -25,14 +25,14 @@ public class ExceptionUtils {
 
     public static final String SEPARATOR = ",";
 
-    public static String toString(Exception exception) {
-        return toString(exception, getKeyWords());
+    public static String toString(Throwable throwable) {
+        return toString(throwable, getKeyWords());
     }
 
-    public static String toString(Exception exception, Collection<String> keyWords) {
+    public static String toString(Throwable throwable, Collection<String> keyWords) {
         try {
             StringWriter sw = new StringWriter();
-            exception.printStackTrace(new PrintWriter(sw));
+            throwable.printStackTrace(new PrintWriter(sw));
             BufferedReader reader = new BufferedReader(new StringReader(sw.toString()));
             StringBuilder sb = new StringBuilder();
             sb.append(reader.readLine());

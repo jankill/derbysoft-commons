@@ -6,6 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import java.util.concurrent.TimeUnit;
 
 public class ThreadUtils {
+
     private static Log logger = LogFactory.getLog(ThreadUtils.class);
 
     public static void sleep(long millis) {

@@ -35,10 +35,13 @@ import java.util.concurrent.ConcurrentMap;
 public abstract class AbstractPartitionTableRepository<T> implements PartitionTableRepository<T> {
 
     private static final ConcurrentMap<String, Boolean> EXISTED_TABLE_MAP = new ConcurrentHashMap<String, Boolean>();
+    private static final ConcurrentMap<String, String> TABLE_TEMPLATE_MAP = new ConcurrentHashMap<String, String>();
 
-    protected static final String COMMA = ",";
     protected static final String LEFT_BRACKET = "(";
     protected static final String RIGHT_BRACKET = ")";
+
+    private static final int VALUE_INDEX = 1;
+    private static final String SQL_ESCAPE = "`";
 
     private boolean partitionRequired = true;
 
@@ -226,7 +229,7 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            String checkSQL = String.format("SELECT * FROM information_schema.TABLES WHERE table_name='%s';", tableName);
+            String checkSQL = String.format("SHOW TABLES LIKE '%s';", tableName);
             return CollectionUtils.isEmpty(session.createSQLQuery(checkSQL).list());
         } catch (Exception ex) {
             return false;
@@ -241,11 +244,15 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            SQLQuery sqlQuery = session.createSQLQuery(String.format("SHOW COLUMNS FROM %s", tableName));
+            String template = TABLE_TEMPLATE_MAP.get(tableName);
+            if (template == null) {
+                Object[] keyValue = (Object[]) session.createSQLQuery("SHOW CREATE TABLE " + tableName + ";").list().get(0);
+                template = StringUtils.replace(keyValue[VALUE_INDEX].toString(), "CREATE TABLE", "CREATE TABLE IF NOT EXISTS");
+                TABLE_TEMPLATE_MAP.put(tableName, template);
+            }
             String newTableName = getNewTableName(suffix, tableName);
-            String buildColumns = buildColumns(sqlQuery.list());
-            String createTableSQL = String.format("CREATE TABLE IF NOT EXISTS %s (%s) ENGINE=MYISAM DEFAULT CHARSET=utf8;", newTableName, buildColumns);
-            session.createSQLQuery(createTableSQL).executeUpdate();
+
+            session.createSQLQuery(StringUtils.replace(template, escape(tableName), escape(newTableName))).executeUpdate();
         } catch (Exception ex) {
             throw new SystemException(ex);
         } finally {
@@ -253,6 +260,10 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
                 session.close();
             }
         }
+    }
+
+    private String escape(String name) {
+        return StringUtils.join(SQL_ESCAPE, name, SQL_ESCAPE);
     }
 
     private long count(Criteria criteria, DetachedCriteria detachedCriteria) {
@@ -438,42 +449,6 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
             return tableName;
         }
         return String.format("%s_%s", tableName, suffix);
-    }
-
-
-    protected String buildColumns(List detailList) {
-        StringBuilder builder = new StringBuilder();
-        for (Object details : detailList) {
-            Object[] fieldDescription = (Object[]) details;
-            if (fieldDescription == null || fieldDescription.length != 6) {
-                throw new IllegalArgumentException();
-            }
-            String fieldName = (String) fieldDescription[0];
-            builder.append(fieldName).append(" ");
-            builder.append((String) fieldDescription[1]).append(" ");
-            builder.append(StringUtils.equalsIgnoreCase((String) fieldDescription[2], "NO") ? "NOT NULL" : "DEFAULT NULL").append(" ");
-            builder.append(buildIndex((String) fieldDescription[3], fieldName));
-            if (StringUtils.isNotBlank((String) fieldDescription[5])) {
-                builder.append((String) fieldDescription[5]);
-            }
-            builder.append(COMMA);
-        }
-        return StringUtils.removeEnd(builder.toString(), COMMA);
-    }
-
-    private String buildIndex(String indexColumn, String fieldName) {
-        StringBuilder indexBuilder = new StringBuilder();
-        if (StringUtils.equalsIgnoreCase(indexColumn, "PRI")) {
-            indexBuilder.append("PRIMARY KEY").append(" ");
-        } else if (StringUtils.equalsIgnoreCase(indexColumn, "UNI")) {
-            indexBuilder.append(",").append(String.format("UNIQUE KEY (%s)", fieldName)).append(",");
-        } else if (StringUtils.equalsIgnoreCase(indexColumn, "MUL")) {
-            indexBuilder.append(",").append(String.format("KEY USING BTREE (%s)", fieldName)).append(",");
-        }
-        if (StringUtils.endsWith(indexBuilder.toString(), COMMA)) {
-            return StringUtils.removeEnd(indexBuilder.toString(), COMMA);
-        }
-        return indexBuilder.toString();
     }
 
     protected void eq(DetachedCriteria detachedCriteria, String property, Object value) {

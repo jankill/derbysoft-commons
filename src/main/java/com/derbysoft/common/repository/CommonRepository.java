@@ -89,11 +89,6 @@ public class CommonRepository {
         return paginater;
     }
 
-    @Deprecated
-    public Paginater paginater(DetachedCriteria detachedCriteria, Paginater paginater) {
-        return paginate(detachedCriteria, paginater);
-    }
-
     private void sort(DetachedCriteria detachedCriteria, Paginater paginater) {
         if (StringUtils.isBlank(paginater.getSortField())) {
             return;
