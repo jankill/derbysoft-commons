@@ -43,6 +43,9 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
     private static final int VALUE_INDEX = 1;
     private static final String SQL_ESCAPE = "`";
 
+    private static final String DEFAULT_ENGINE = "MYISAM";
+    public static final String[] ENGINES = new String[]{"InnoDB", "MYISAM"};
+
     private boolean partitionRequired = true;
 
     @Autowired(required = false)
@@ -248,6 +251,9 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
             if (template == null) {
                 Object[] keyValue = (Object[]) session.createSQLQuery("SHOW CREATE TABLE " + tableName + ";").list().get(0);
                 template = StringUtils.replace(keyValue[VALUE_INDEX].toString(), "CREATE TABLE", "CREATE TABLE IF NOT EXISTS");
+                if (StringUtils.isNotBlank(getEngine())) {
+                    template = StringUtils.replaceEach(template, ENGINES, new String[]{getEngine(), getEngine()});
+                }
                 TABLE_TEMPLATE_MAP.put(tableName, template);
             }
             String newTableName = getNewTableName(suffix, tableName);
@@ -377,6 +383,10 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
 
     protected Session getSession(Interceptor interceptor) {
         return sessionFactory.withOptions().interceptor(interceptor).openSession();
+    }
+
+    public String getEngine() {
+        return DEFAULT_ENGINE;
     }
 
     private final class SelectInterceptor extends EmptyInterceptor {

@@ -6,12 +6,11 @@ import org.springframework.ws.transport.http.HttpUrlConnectionMessageSender;
 import javax.net.ssl.*;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 public class EhHttpUrlConnectionMessageSender extends HttpUrlConnectionMessageSender implements InitializingBean {
 
-    private static final String SSL = "SSL";
 
     private int readTimeout = 120000;
 
@@ -41,31 +40,23 @@ public class EhHttpUrlConnectionMessageSender extends HttpUrlConnectionMessageSe
     @Override
     public void afterPropertiesSet() throws Exception {
         if (trustAllHttpsCertificates) {
-            SSLContext context = SSLContext.getInstance(SSL);
-            context.init(null, new TrustManager[]{new IgnorantTrustManager()}, null);
-            HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
-            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
-                public boolean verify(String urlHostName, SSLSession session) {
-                    return true;
-                }
-            });
+            trustAllCertificates();
         }
     }
 
-    private static class IgnorantTrustManager implements TrustManager, X509TrustManager {
+    private static final String SSL = "SSL";
 
-        @Override
-        public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-        }
-
-        @Override
-        public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-        }
-
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return null;
-        }
+    private static void trustAllCertificates() throws NoSuchAlgorithmException, KeyManagementException {
+        SSLContext context = SSLContext.getInstance(SSL);
+        context.init(null, new TrustManager[]{new IgnorantTrustManager()}, null);
+        HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
+        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+            public boolean verify(String urlHostName, SSLSession session) {
+                return true;
+            }
+        });
     }
+
+
 }
 
