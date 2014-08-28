@@ -20,6 +20,23 @@ public class Sets {
         return new TreeSet<E>();
     }
 
+    public static <E> HashSet<E> newHashSet(Iterable<? extends E> elements) {
+        if (elements instanceof Collection) {
+            @SuppressWarnings("unchecked")
+            Collection<? extends E> collection = (Collection<? extends E>) elements;
+            return new HashSet<E>(collection);
+        }
+        return newHashSet(elements.iterator());
+    }
+
+    public static <E> HashSet<E> newHashSet(Iterator<? extends E> elements) {
+        HashSet<E> set = newHashSet();
+        while (elements.hasNext()) {
+            set.add(elements.next());
+        }
+        return set;
+    }
+
     public static boolean isEmpty(Set values) {
         return values == null || values.isEmpty();
     }

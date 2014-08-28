@@ -24,6 +24,25 @@ public final class Lists {
         return list;
     }
 
+    public static <E> ArrayList<E> newArrayList(Iterable<? extends E> elements) {
+        checkNotNull(elements);
+        if (elements instanceof Collection) {
+            @SuppressWarnings("unchecked")
+            Collection<? extends E> collection = (Collection<? extends E>) elements;
+            return new ArrayList<E>(collection);
+        }
+        return newArrayList(elements.iterator());
+    }
+
+    public static <E> ArrayList<E> newArrayList(Iterator<? extends E> elements) {
+        checkNotNull(elements);
+        ArrayList<E> list = newArrayList();
+        while (elements.hasNext()) {
+            list.add(elements.next());
+        }
+        return list;
+    }
+
     public static boolean isEmpty(List values) {
         return values == null || values.isEmpty();
     }

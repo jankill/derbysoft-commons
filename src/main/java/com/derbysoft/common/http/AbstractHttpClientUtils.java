@@ -24,8 +24,6 @@ public abstract class AbstractHttpClientUtils {
 
     private static final int TIMEOUT = 30 * 1000;
 
-    private static final Charset UTF_8 = Consts.UTF_8;
-
     protected static Log logger = LogFactory.getLog(AbstractHttpClientUtils.class);
 
     private static final int ERROR_CODE = 500;
@@ -51,7 +49,7 @@ public abstract class AbstractHttpClientUtils {
         try {
             HttpPost httpPost = getHttpPost(url, request);
             HttpResponse httpResponse = httpclient.execute(httpPost);
-            return EntityUtils.toString(httpResponse.getEntity(), UTF_8);
+            return EntityUtils.toString(httpResponse.getEntity(), Consts.UTF_8);
         } catch (Exception e) {
             logger.error("HttpClientUtils getResult error", e);
             return null;
@@ -84,7 +82,7 @@ public abstract class AbstractHttpClientUtils {
 
 
     private static HttpPost getHttpPost(String url, String request) {
-        return createHttpPost(url, new StringEntity(request, ContentType.create("text/xml", UTF_8)));
+        return createHttpPost(url, new StringEntity(request, ContentType.create("text/xml", Consts.UTF_8)));
     }
 
     protected static HttpPost createHttpPost(String url, HttpEntity httpEntity) {

@@ -24,27 +24,27 @@ public abstract class HttpsClientUtils extends AbstractHttpClientUtils {
     private static SSLConnectionSocketFactory sslConnectionSocketFactory = getSslConnectionSocketFactory();
 
     public static int getStatusCode(String url, String request) {
-        if (isNotHttpsProtocal(url)) {
+        if (isNotHttpsProtocol(url)) {
             return HttpClientUtils.getStatusCode(url, request);
         }
         return getStatusCode(url, request, getHttpClient());
     }
 
     public static String getResult(String url, String request) {
-        if (isNotHttpsProtocal(url)) {
+        if (isNotHttpsProtocol(url)) {
             return HttpClientUtils.getResult(url, request);
         }
         return getResult(url, request, getHttpClient());
     }
 
     public static byte[] getResult(String url, byte[] request) {
-        if (isNotHttpsProtocal(url)) {
+        if (isNotHttpsProtocol(url)) {
             return HttpClientUtils.getResult(url, request);
         }
         return getResult(url, request, getHttpClient());
     }
 
-    private static boolean isNotHttpsProtocal(String url) {
+    private static boolean isNotHttpsProtocol(String url) {
         return !url.startsWith("https");
     }
 

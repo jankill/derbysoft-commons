@@ -3,8 +3,8 @@ package com.derbysoft.common.repository.partition;
 import com.derbysoft.common.exception.SystemException;
 import com.derbysoft.common.hibernate.PersistenceSupportHibernateInterceptor;
 import com.derbysoft.common.paginater.Paginater;
-import com.derbysoft.common.util.CollectionsUtils;
 import com.derbysoft.common.util.ReflectionUtils;
+import com.derbysoft.common.util.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -79,7 +79,7 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
 
     @Override
     public List<T> saveAll(String suffix, List<T> logs) {
-        if (CollectionsUtils.isEmpty(logs)) {
+        if (Lists.isEmpty(logs)) {
             return new ArrayList<T>();
         }
         Session session = null;
@@ -101,7 +101,7 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
 
     @Override
     public List<T> saveAll(List<T> logs) {
-        if (CollectionsUtils.isEmpty(logs)) {
+        if (Lists.isEmpty(logs)) {
             return new ArrayList<T>();
         }
         return saveAll(getTableSuffixForSave(logs.get(0)), logs);

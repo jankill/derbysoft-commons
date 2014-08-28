@@ -1,5 +1,6 @@
 package com.derbysoft.common.util;
 
+import com.derbysoft.common.util.collect.Collections;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
@@ -64,7 +65,7 @@ public class ExceptionUtils {
     }
 
     private static boolean containsAny(String line, Collection<String> keyWords) {
-        if (CollectionsUtils.isEmpty(keyWords)) {
+        if (Collections.isEmpty(keyWords)) {
             return true;
         }
         for (String keyWord : keyWords) {

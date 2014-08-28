@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public abstract class Collections extends org.apache.commons.collections.CollectionUtils {
+
     public static <T> String join(Collection<T> collection, String delimit) {
         if (isEmpty(collection)) {
             return "";
@@ -18,4 +19,5 @@ public abstract class Collections extends org.apache.commons.collections.Collect
         }
         return sb.toString();
     }
+
 }
