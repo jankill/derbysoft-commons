@@ -25,20 +25,20 @@ public abstract class AbstractJaxb2UserType extends AbstractCompositeUserType im
 
     private Class<?> entityType;
 
-    private static Jaxb2Marshaller jaxb2Marshaller;
+    private Jaxb2Marshaller jaxb2Marshaller;
 
     @Override
     public void setParameterValues(Properties parameters) {
         String entityTypeAsString = parameters.getProperty(ENTITY_TYPE_KEY);
         try {
             entityType = Thread.currentThread().getContextClassLoader().loadClass(entityTypeAsString);
+            initialize();
         } catch (ClassNotFoundException e) {
             throw new HibernateException("Class [" + entityTypeAsString + "] not found", e);
         }
     }
 
-    protected static String marshall(Object o) {
-        initialize(o);
+    protected String marshall(Object o) {
         Result result = new StringResult();
         jaxb2Marshaller.marshal(o, result);
         return result.toString();
@@ -53,12 +53,12 @@ public abstract class AbstractJaxb2UserType extends AbstractCompositeUserType im
         return entityType;
     }
 
-    private static void initialize(Object obj) {
+    private void initialize() {
         if (jaxb2Marshaller != null) {
             return;
         }
         jaxb2Marshaller = new Jaxb2Marshaller();
-        jaxb2Marshaller.setContextPath(obj.getClass().getPackage().getName());
+        jaxb2Marshaller.setContextPath(entityType.getPackage().getName());
         try {
             jaxb2Marshaller.afterPropertiesSet();
         } catch (Exception e) {
