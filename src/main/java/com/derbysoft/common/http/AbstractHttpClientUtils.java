@@ -22,7 +22,7 @@ import java.nio.charset.Charset;
  */
 public abstract class AbstractHttpClientUtils {
 
-    private static final int TIMEOUT = 30 * 1000;
+    private static final int TIMEOUT = 120 * 1000;
 
     protected static Log logger = LogFactory.getLog(AbstractHttpClientUtils.class);
 

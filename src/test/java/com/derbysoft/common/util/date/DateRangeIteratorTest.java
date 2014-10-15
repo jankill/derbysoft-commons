@@ -16,7 +16,6 @@ public class DateRangeIteratorTest {
     @Test
     public void testNoOptions() {
         DateRangeIterator dateRangeIterator = DateRangeIterator.of(FROM, TO);
-
         List<LocalDate> localDates = toList(dateRangeIterator);
         Assert.assertEquals(3, localDates.size());
         Assert.assertEquals(FROM, localDates.get(0).toString());

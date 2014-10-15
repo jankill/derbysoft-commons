@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchema;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.namespace.QName;
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import java.io.InputStream;
@@ -25,12 +26,15 @@ public abstract class JAXBUtils {
         return marshal(message, Maps.<String, Object>newHashMap());
     }
 
+    public static void marshal(Object message, Result result) {
+        marshal(message, result, Maps.<String, Object>newHashMap());
+    }
+
     public static String marshalWithFormat(Object message) {
         return marshal(message, Maps.map(JAXB_FORMATTED_OUTPUT, true));
     }
 
-    public static String marshal(Object message, Map<String, Object> properties) {
-        StringResult result = new StringResult();
+    public static void marshal(Object message, Result result, Map<String, Object> properties) {
         Class<?> msgClass = message.getClass();
         try {
             Marshaller marshaller = JAXBContext.newInstance(message.getClass()).createMarshaller();
@@ -39,14 +43,18 @@ public abstract class JAXBUtils {
             }
             if (msgClass.getAnnotation(XmlRootElement.class) != null) {
                 marshaller.marshal(message, result);
-            }
-            if (msgClass.getAnnotation(XmlType.class) != null) {
+            } else if (msgClass.getAnnotation(XmlType.class) != null) {
                 QName qName = new QName(msgClass.getPackage().getAnnotation(XmlSchema.class).namespace(), msgClass.getSimpleName());
                 marshaller.marshal(new JAXBElement(qName, msgClass, message), result);
             }
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String marshal(Object message, Map<String, Object> properties) {
+        StringResult result = new StringResult();
+        marshal(message, result, properties);
         return result.toString();
     }
 
