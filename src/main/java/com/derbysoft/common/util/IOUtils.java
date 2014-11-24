@@ -20,6 +20,16 @@ public abstract class IOUtils {
         return outputStream.toByteArray();
     }
 
+    public static String readAsString(InputStream inputStream) throws IOException {
+        return readAsString(inputStream,"UTF-8");
+    }
+
+    public static String readAsString(InputStream inputStream, String charsetName) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        flush(inputStream, outputStream);
+        return new String(outputStream.toByteArray(), charsetName);
+    }
+
     private static void flush(InputStream inputStream, OutputStream outputStream) throws IOException {
         flush(inputStream, outputStream, true);
     }

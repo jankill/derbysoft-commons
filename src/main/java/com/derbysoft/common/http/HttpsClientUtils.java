@@ -1,6 +1,6 @@
 package com.derbysoft.common.http;
 
-import com.derbysoft.common.exception.SystemException;
+import com.derbysoft.common.exception.SystemInternalException;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.conn.ssl.TrustStrategy;
@@ -57,7 +57,7 @@ public abstract class HttpsClientUtils extends AbstractHttpClientUtils {
             SSLContext sslcontext = buildSSLContext();
             return new SSLConnectionSocketFactory(sslcontext, new String[]{"TLSv1"}, null, SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         } catch (Exception e) {
-            throw new SystemException(e);
+            throw new SystemInternalException(e);
         }
     }
 

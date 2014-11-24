@@ -1,6 +1,6 @@
 package com.derbysoft.common.web.struts2.interceptor;
 
-import com.derbysoft.common.exception.SystemException;
+import com.derbysoft.common.exception.SystemInternalException;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
@@ -56,7 +56,7 @@ public class ParametersTrimInterceptor extends AbstractInterceptor {
         try {
             return invocation.invoke();
         } catch (Exception e) {
-            throw new SystemException(e);
+            throw new SystemInternalException(e);
         }
     }
 }

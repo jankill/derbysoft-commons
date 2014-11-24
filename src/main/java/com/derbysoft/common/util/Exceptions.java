@@ -2,7 +2,6 @@ package com.derbysoft.common.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 
 /**

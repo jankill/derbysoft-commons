@@ -24,6 +24,10 @@ public final class Maps {
         return values == null || values.isEmpty();
     }
 
+    public static boolean isNotEmpty(Map values) {
+        return !isEmpty(values);
+    }
+
     public static Map map(Object... keyValuePairs) {
         if (keyValuePairs == null) {
             return new HashMap();

@@ -1,6 +1,6 @@
 package com.derbysoft.common.util.date;
 
-import com.derbysoft.common.exception.SystemException;
+import com.derbysoft.common.exception.SystemInternalException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
@@ -23,7 +23,7 @@ public abstract class Dates {
             }
             return getDayFormatter().parse(date);
         } catch (ParseException e) {
-            throw new SystemException("parse date [" + date + "] failed in use [" + getDayFormatter() + "]", e);
+            throw new SystemInternalException("parse date [" + date + "] failed in use [" + getDayFormatter() + "]", e);
         }
     }
 

@@ -1,6 +1,6 @@
 package com.derbysoft.common.repository.partition;
 
-import com.derbysoft.common.exception.SystemException;
+import com.derbysoft.common.exception.SystemInternalException;
 import com.derbysoft.common.hibernate.PersistenceSupportHibernateInterceptor;
 import com.derbysoft.common.paginater.Paginater;
 import com.derbysoft.common.util.ReflectionUtils;
@@ -90,7 +90,7 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
                 session.save(log);
             }
         } catch (Exception ex) {
-            throw new SystemException(ex);
+            throw new SystemInternalException(ex);
         } finally {
             if (session != null) {
                 session.close();
@@ -120,7 +120,7 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
             loadOneToManyFields(object);
             return object;
         } catch (Exception ex) {
-            throw new SystemException(ex);
+            throw new SystemInternalException(ex);
         } finally {
             if (session != null) {
                 session.close();
@@ -148,7 +148,7 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
             }
             return list;
         } catch (Exception e) {
-            throw new SystemException(e);
+            throw new SystemInternalException(e);
         } finally {
             if (session != null) {
                 session.close();
@@ -185,7 +185,7 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
             paginater.setObjects(list);
             return paginater;
         } catch (Exception e) {
-            throw new SystemException(e);
+            throw new SystemInternalException(e);
         } finally {
             if (session != null) {
                 session.close();
@@ -260,7 +260,7 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
 
             session.createSQLQuery(StringUtils.replace(template, escape(tableName), escape(newTableName))).executeUpdate();
         } catch (Exception ex) {
-            throw new SystemException(ex);
+            throw new SystemInternalException(ex);
         } finally {
             if (session != null) {
                 session.close();
@@ -289,7 +289,7 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
                 return field.getName();
             }
         }
-        throw new SystemException(String.format("Entity Id field not found : %s ", clazz.getName()));
+        throw new SystemInternalException(String.format("Entity Id field not found : %s ", clazz.getName()));
     }
 
     private void loadOneToManyFields(List list) {
@@ -304,7 +304,7 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
             try {
                 Hibernate.initialize(clazz.getMethod(getMethodName).invoke(object));
             } catch (Exception e) {
-                throw new SystemException(e);
+                throw new SystemInternalException(e);
             }
         }
     }

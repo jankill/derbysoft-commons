@@ -41,6 +41,10 @@ public class Sets {
         return values == null || values.isEmpty();
     }
 
+    public static boolean isNotEmpty(Set values) {
+        return !isEmpty(values);
+    }
+
     public static <E> HashSet<E> newHashSet(E... elements) {
         int capacity = Maps.capacity(elements.length);
         HashSet<E> set = new HashSet<E>(capacity);

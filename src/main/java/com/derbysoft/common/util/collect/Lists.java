@@ -47,6 +47,10 @@ public final class Lists {
         return values == null || values.isEmpty();
     }
 
+    public static boolean isNotEmpty(List values) {
+        return !isEmpty(values);
+    }
+
     public static <T> T get(List<T> list, int index) {
         if (index < 0) {
             throw new IndexOutOfBoundsException("Index cannot be negative: " + index);

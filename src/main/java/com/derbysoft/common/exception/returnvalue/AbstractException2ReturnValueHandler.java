@@ -1,6 +1,6 @@
 package com.derbysoft.common.exception.returnvalue;
 
-import com.derbysoft.common.exception.SystemException;
+import com.derbysoft.common.exception.SystemInternalException;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -20,7 +20,7 @@ public abstract class AbstractException2ReturnValueHandler<ThrowableType extends
             Type[] typeArguments = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments();
             throwableType = (Class<ThrowableType>) typeArguments[0];
         } catch (Exception e) {
-            throw new SystemException("concreate handler should be parameterized!", e);
+            throw new SystemInternalException("concreate handler should be parameterized!", e);
         }
     }
 

@@ -1,6 +1,6 @@
 package com.derbysoft.common.web.filter.support;
 
-import com.derbysoft.common.exception.SystemException;
+import com.derbysoft.common.exception.SystemInternalException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -39,7 +39,7 @@ public abstract class ResponseUtil {
         response.setHeader("Content-Encoding", "gzip");
         boolean containsEncoding = response.containsHeader("Content-Encoding");
         if (!containsEncoding) {
-            throw new SystemException("Failure when attempting to set " + "Content-Encoding: gzip");
+            throw new SystemInternalException("Failure when attempting to set " + "Content-Encoding: gzip");
         }
     }
 

@@ -4,7 +4,8 @@ import org.apache.commons.lang3.Validate;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Iterator;
 
 public class DateRangeIterator implements Iterable<LocalDate>, Iterator<LocalDate> {
     public enum Option {

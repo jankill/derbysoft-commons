@@ -1,6 +1,6 @@
 package com.derbysoft.common.util;
 
-import com.derbysoft.common.exception.SystemException;
+import com.derbysoft.common.exception.SystemInternalException;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -15,7 +15,7 @@ public abstract class ReflectionUtils {
         if (type instanceof Class) {
             return getSuperClassGenericType((Class) type);
         }
-        throw new SystemException(clazz.getName() + " should be parameterized!");
+        throw new SystemInternalException(clazz.getName() + " should be parameterized!");
     }
 
     public static Class getSuperClassGenericType(Type type) {
@@ -25,6 +25,6 @@ public abstract class ReflectionUtils {
         if (type instanceof Class) {
             return getSuperClassGenericType((Class) type);
         }
-        throw new SystemException(type.getClass().getName() + " should be parameterized!");
+        throw new SystemInternalException(type.getClass().getName() + " should be parameterized!");
     }
 }

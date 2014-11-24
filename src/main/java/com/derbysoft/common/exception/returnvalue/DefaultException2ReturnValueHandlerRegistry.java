@@ -1,10 +1,10 @@
 package com.derbysoft.common.exception.returnvalue;
 
+import org.springframework.beans.factory.InitializingBean;
+
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author zhupan

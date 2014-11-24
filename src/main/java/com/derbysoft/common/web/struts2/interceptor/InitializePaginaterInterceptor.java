@@ -1,6 +1,6 @@
 package com.derbysoft.common.web.struts2.interceptor;
 
-import com.derbysoft.common.exception.SystemException;
+import com.derbysoft.common.exception.SystemInternalException;
 import com.derbysoft.common.paginater.Paginater;
 import com.derbysoft.common.web.struts2.support.PaginateActionSupport;
 import com.opensymphony.xwork2.ActionInvocation;
@@ -35,7 +35,7 @@ public class InitializePaginaterInterceptor extends AbstractInterceptor {
         try {
             return invocation.invoke();
         } catch (Exception e) {
-            throw new SystemException(e);
+            throw new SystemInternalException(e);
         }
     }
 
