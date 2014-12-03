@@ -1,4 +1,4 @@
-package com.derbysoft.common.util;
+package com.derbysoft.common.util.xml;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
