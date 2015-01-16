@@ -1,9 +1,8 @@
 package com.derbysoft.common.util.date;
 
-import com.derbysoft.common.exception.SystemInternalException;
 import org.apache.commons.lang3.StringUtils;
 
-import java.text.ParseException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,13 +16,17 @@ public abstract class Dates {
     };
 
     public static Date of(String date) {
+        return of(date, getDayFormatter());
+    }
+
+    public static Date of(String date, DateFormat dateFormat) {
         try {
             if (StringUtils.isBlank(date)) {
                 return null;
             }
-            return getDayFormatter().parse(date);
-        } catch (ParseException e) {
-            throw new SystemInternalException("parse date [" + date + "] failed in use [" + getDayFormatter() + "]", e);
+            return dateFormat.parse(date);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Illegal date:" + date);
         }
     }
 

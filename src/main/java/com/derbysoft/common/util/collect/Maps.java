@@ -16,8 +16,20 @@ public final class Maps {
         return new LinkedHashMap<K, V>();
     }
 
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMap(Map<? extends K, ? extends V> map) {
+        return new LinkedHashMap<K, V>(map);
+    }
+
     public static <K extends Comparable, V> TreeMap<K, V> newTreeMap() {
         return new TreeMap<K, V>();
+    }
+
+    public static <K, V> TreeMap<K, V> newTreeMap(SortedMap<K, ? extends V> map) {
+        return new TreeMap<K, V>(map);
+    }
+
+    public static <C, K extends C, V> TreeMap<K, V> newTreeMap(Comparator<C> comparator) {
+        return new TreeMap<K, V>(comparator);
     }
 
     public static boolean isEmpty(Map values) {

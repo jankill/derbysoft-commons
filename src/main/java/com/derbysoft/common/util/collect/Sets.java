@@ -16,8 +16,39 @@ public class Sets {
         return new LinkedHashSet<E>();
     }
 
+    public static <E> HashSet<E> newHashSetWithExpectedSize(int expectedSize) {
+        return new HashSet<E>(Maps.capacity(expectedSize));
+    }
+
+    public static <E> LinkedHashSet<E> newLinkedHashSet(
+            Iterable<? extends E> elements) {
+        if (elements instanceof Collection) {
+            @SuppressWarnings("unchecked")
+            Collection<? extends E> collection = (Collection<? extends E>) elements;
+            return new LinkedHashSet<E>(collection);
+        } else {
+            LinkedHashSet<E> set = newLinkedHashSet();
+            for (E element : elements) {
+                set.add(element);
+            }
+            return set;
+        }
+    }
+
     public static <E extends Comparable> TreeSet<E> newTreeSet() {
         return new TreeSet<E>();
+    }
+
+    public static <E extends Comparable> TreeSet<E> newTreeSet(Iterable<? extends E> elements) {
+        TreeSet<E> set = newTreeSet();
+        for (E element : elements) {
+            set.add(element);
+        }
+        return set;
+    }
+
+    public static <E> TreeSet<E> newTreeSet(Comparator<? super E> comparator) {
+        return new TreeSet<E>(comparator);
     }
 
     public static <E> HashSet<E> newHashSet(Iterable<? extends E> elements) {

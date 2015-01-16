@@ -21,7 +21,7 @@ public abstract class IOUtils {
     }
 
     public static String readAsString(InputStream inputStream) throws IOException {
-        return readAsString(inputStream,"UTF-8");
+        return readAsString(inputStream, Charsets.UTF_8.name());
     }
 
     public static String readAsString(InputStream inputStream, String charsetName) throws IOException {

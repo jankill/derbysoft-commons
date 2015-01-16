@@ -14,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Map;
 
 /**
  * @author zhupan
@@ -30,11 +31,25 @@ public abstract class HttpsClientUtils extends AbstractHttpClientUtils {
         return getStatusCode(url, request, getHttpClient());
     }
 
+    public static int getStatusCode(String url, Map<String, String[]> parameters) {
+        if (isNotHttpsProtocol(url)) {
+            return HttpClientUtils.getStatusCode(url, parameters);
+        }
+        return getStatusCode(url, parameters, getHttpClient());
+    }
+
     public static String getResult(String url, String request) {
         if (isNotHttpsProtocol(url)) {
             return HttpClientUtils.getResult(url, request);
         }
         return getResult(url, request, getHttpClient());
+    }
+
+    public static String getResult(String url, Map<String, String[]> parameters) {
+        if (isNotHttpsProtocol(url)) {
+            return HttpClientUtils.getResult(url, parameters);
+        }
+        return getResult(url, parameters, getHttpClient());
     }
 
     public static byte[] getResult(String url, byte[] request) {
