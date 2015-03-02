@@ -4,7 +4,7 @@
     <groupId>com.derbysoft</groupId>
     <artifactId>derbysoft-commons</artifactId>
     <name>derbysoft-commons</name>
-    <version>2.1</version>
+    <version>2.2</version>
     <packaging>jar</packaging>
 
     <build>
@@ -158,7 +158,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.3.5</version>
+            <version>4.4</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -189,7 +189,7 @@
         <dependency>
             <groupId>com.derbysoft.ccs</groupId>
             <artifactId>ccs-protocol_scala_2.10_kafka_0.8.1</artifactId>
-            <version>1.7.12</version>
+            <version>2.0</version>
             <optional>true</optional>
             <exclusions>
                 <exclusion>

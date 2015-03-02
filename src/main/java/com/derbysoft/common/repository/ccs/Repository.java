@@ -1,11 +1,10 @@
 package com.derbysoft.common.repository.ccs;
 
-import com.derbysoft.ccs.core.MappingEntry;
 import com.derbysoft.ccs.core.MappingQueryRestriction;
 
 import java.util.List;
 
-public interface Repository<T extends MappingEntry> {
+public interface Repository<T> {
 
     T get(String key);
 

@@ -1,13 +1,12 @@
 package com.derbysoft.common.repository.ccs;
 
 import com.derbysoft.ccs.core.MappingCache;
-import com.derbysoft.ccs.core.MappingEntry;
 import com.derbysoft.ccs.core.MappingQueryRestriction;
 import com.derbysoft.common.util.SeparatorStringBuilder;
 
 import java.util.List;
 
-public abstract class AbstractRepository<T extends MappingEntry> implements Repository<T> {
+public abstract class AbstractRepository<T> implements Repository<T> {
 
     private static final String SEPARATOR = ":";
 
