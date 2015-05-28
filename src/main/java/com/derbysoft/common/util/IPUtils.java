@@ -3,6 +3,9 @@ package com.derbysoft.common.util;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 
 /**
  * @author zhupan panos.zhu@gmail.com
@@ -49,7 +52,7 @@ public abstract class IPUtils {
     }
 
     public static boolean isIP(String address) {
-        if (StringUtils.isEmpty(address)) {
+        if (StringUtils.isBlank(address)) {
             return false;
         }
         String[] ips = StringUtils.split(address, '.');
@@ -67,4 +70,22 @@ public abstract class IPUtils {
         }
     }
 
+    public static String getHostAddress() {
+        try {
+            Enumeration<NetworkInterface> netInterfaces = NetworkInterface.getNetworkInterfaces();
+            while (netInterfaces.hasMoreElements()) {
+                NetworkInterface ni = netInterfaces.nextElement();
+                Enumeration<InetAddress> address = ni.getInetAddresses();
+                while (address.hasMoreElements()) {
+                    InetAddress ip = address.nextElement();
+                    if (ip.isSiteLocalAddress() && !ip.isLoopbackAddress() && ip.getHostAddress().indexOf(":") == -1) {
+                        return ip.getHostAddress();
+                    }
+                }
+            }
+            return "";
+        } catch (Exception e) {
+            return "";
+        }
+    }
 }

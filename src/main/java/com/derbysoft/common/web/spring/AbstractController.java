@@ -66,7 +66,7 @@ public abstract class AbstractController {
         if (ArrayUtils.isNotEmpty(excludes)) {
             Collections.addAll(excludeFields, excludes);
         }
-        return formatObjectToJson(object, excludeFields, new SerializerFeature[]{SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.DisableCircularReferenceDetect});
+        return formatObjectToJson(object, excludeFields, new SerializerFeature[]{SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty});
     }
 
     protected String formatObjectToJson(Object object, List<String> excludes, SerializerFeature[] features) {

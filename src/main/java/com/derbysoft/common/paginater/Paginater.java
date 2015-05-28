@@ -48,6 +48,9 @@ public class Paginater {
 
     public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
+        if (getTotalPage() < getPageNo()) {
+            setPageNo(getTotalPage());
+        }
     }
 
     public int getPageNo() {

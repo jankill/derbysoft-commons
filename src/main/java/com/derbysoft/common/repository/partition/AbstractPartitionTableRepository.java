@@ -158,13 +158,12 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
 
     @Override
     public Paginater paginate(String suffix, DetachedCriteria detachedCriteria, Paginater paginater) {
-        sort(detachedCriteria, paginater);
-
         return paginate(suffix, detachedCriteria, paginater, false);
     }
 
     @Override
     public Paginater paginate(String suffix, DetachedCriteria detachedCriteria, Paginater paginater, boolean loadOneToManyFields) {
+        sort(detachedCriteria, paginater);
         Session session = null;
         try {
             if (notExist(suffix)) {

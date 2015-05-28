@@ -12,6 +12,8 @@ public abstract class IOUtils {
 
     private static final int DEFAULT_BUFFER_SIZE = 1024;
 
+    private static final int EOF = -1;
+
     private static Log logger = LogFactory.getLog(IOUtils.class);
 
     public static byte[] readAsBytes(InputStream inputStream) throws IOException {
@@ -59,5 +61,31 @@ public abstract class IOUtils {
                 }
             }
         }
+    }
+
+    public static int copy(InputStream input, OutputStream output) {
+        long count = copyLarge(input, output);
+        if (count > Integer.MAX_VALUE) {
+            return -1;
+        }
+        return (int) count;
+    }
+
+    private static long copyLarge(InputStream input, OutputStream output) {
+        return copyLarge(input, output, new byte[DEFAULT_BUFFER_SIZE]);
+    }
+
+    private static long copyLarge(InputStream input, OutputStream output, byte[] buffer) {
+        long count = 0;
+        int n = 0;
+        try {
+            while (EOF != (n = input.read(buffer))) {
+                output.write(buffer, 0, n);
+                count += n;
+            }
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
+        return count;
     }
 }

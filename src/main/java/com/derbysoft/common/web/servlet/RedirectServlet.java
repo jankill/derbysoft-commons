@@ -2,7 +2,7 @@ package com.derbysoft.common.web.servlet;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.io.IOUtils;
+import com.derbysoft.common.util.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

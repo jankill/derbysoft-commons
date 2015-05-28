@@ -52,7 +52,7 @@ public abstract class PartitionByDateRepository<T> extends AbstractPartitionTabl
 
     private ThreadLocal<SimpleDateFormat> threadLocal = new ThreadLocal<SimpleDateFormat>() {
         protected synchronized SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyyMMdd");
+            return new SimpleDateFormat(getDateFormat());
         }
     };
 
