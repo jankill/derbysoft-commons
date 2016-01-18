@@ -10,6 +10,7 @@ import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
+import org.hibernate.exception.SQLGrammarException;
 import org.hibernate.internal.CriteriaImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,9 +29,9 @@ import java.util.concurrent.ConcurrentMap;
  * Notes:
  * 1. Only support MYISAM engine.
  * 2. Only support annotation from javax.persistence.*;
- * <p/>
- * <p/>
- * <p/>
+ * <p>
+ * <p>
+ * <p>
  */
 public abstract class AbstractPartitionTableRepository<T> implements PartitionTableRepository<T> {
 
@@ -148,6 +149,14 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
             }
             return list;
         } catch (Exception e) {
+            /**
+             * In order to prevent client receive 'TableNotFound' because of table has been dropped by table clean script.
+             * That here resumed for this kind of exception.
+             */
+            if (e instanceof SQLGrammarException) {
+                removeExistedTableName(suffix);
+                return new ArrayList<T>();
+            }
             throw new SystemInternalException(e);
         } finally {
             if (session != null) {
@@ -184,11 +193,26 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
             paginater.setObjects(list);
             return paginater;
         } catch (Exception e) {
+            /**
+             * In order to prevent client receive 'TableNotFound' because of table has been dropped by table clean script.
+             * That here resumed for this kind of exception.
+             */
+            if (e instanceof SQLGrammarException) {
+                removeExistedTableName(suffix);
+                return paginater;
+            }
             throw new SystemInternalException(e);
         } finally {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    private void removeExistedTableName(String suffix) {
+        for (String tableName : getPartitionalTables()) {
+            String newTableName = getNewTableName(suffix, tableName);
+            EXISTED_TABLE_MAP.remove(newTableName);
         }
     }
 
@@ -407,7 +431,7 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
 
         /**
          * You must at first match longer table name !! If not you possibly match to another column !!!
-         * <p/>
+         * <p>
          * Eg: If exist 'change_log','rate_change_log','rate_change_log_detail' in your database,
          * you want replace named 'rate_change_log_detail' table,but you firstly use 'rate_change_log' so you will generate a wrong sql.
          */
@@ -441,6 +465,9 @@ public abstract class AbstractPartitionTableRepository<T> implements PartitionTa
 
         @Override
         public String onPrepareStatement(String sql) {
+            if (!sql.toUpperCase().contains("INSERT INTO")) {
+                return sql;
+            }
             String oldTable = StringUtils.substringBetween(sql.toUpperCase(), "INSERT INTO", LEFT_BRACKET);
             String[] matchedParts = StringUtils.substringsBetween(sql, LEFT_BRACKET, RIGHT_BRACKET);
             if (matchedParts == null || matchedParts.length != 2) {

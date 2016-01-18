@@ -1,7 +1,9 @@
 package com.derbysoft.common.util;
 
+import com.derbysoft.common.util.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,8 +15,6 @@ import java.util.regex.Pattern;
  */
 public abstract class EmailUtils {
 
-    private static final String SEMICOLON = ";";
-
     public static boolean checkEmail(String mail) {
         String regex = "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
         Pattern p = Pattern.compile(regex);
@@ -22,8 +22,17 @@ public abstract class EmailUtils {
         return m.find();
     }
 
+    public static List<String> toEmailList(String emails) {
+        List<String> emailList = Lists.newArrayList();
+        for (String email : SplitUtils.split(emails)) {
+            if (checkEmail(email)) {
+                emailList.add(email);
+            }
+        }
+        return emailList;
+    }
     public static boolean checkEmails(String emails) {
-        return checkEmails(StringUtils.splitByWholeSeparator(emails, SEMICOLON));
+        return checkEmails(SplitUtils.split(emails));
     }
 
     public static boolean checkEmails(String[] emails) {
@@ -38,5 +47,4 @@ public abstract class EmailUtils {
     public static boolean checkEmails(List<String> emails) {
         return checkEmails(emails.toArray(new String[0]));
     }
-
 }

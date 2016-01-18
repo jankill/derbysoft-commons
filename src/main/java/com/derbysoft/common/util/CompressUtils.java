@@ -4,11 +4,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class CompressUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompressUtils.class);
@@ -69,6 +69,30 @@ public class CompressUtils {
             }
             return os.toString();
         } catch (IOException e) {
+            LOGGER.error(ExceptionUtils.toString(e));
+            return null;
+        }
+    }
+
+    public static File zipFile(File file) {
+        try {
+            File zipFile = new File(file.getAbsolutePath() + ".zip");
+            ZipOutputStream outputStream = new ZipOutputStream(new FileOutputStream(zipFile));
+            outputStream.putNextEntry(new ZipEntry(file.getName()));
+            FileInputStream inputStream = new FileInputStream(file);
+            byte[] buffer = new byte[4096];
+            while (true) {
+                int count = inputStream.read(buffer);
+                if (count <= 0) {
+                    break;
+                }
+                outputStream.write(buffer, 0, count);
+            }
+            inputStream.close();
+            outputStream.closeEntry();
+            outputStream.close();
+            return zipFile;
+        } catch (Exception e) {
             LOGGER.error(ExceptionUtils.toString(e));
             return null;
         }

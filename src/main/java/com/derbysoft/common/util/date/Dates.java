@@ -11,7 +11,7 @@ public abstract class Dates {
 
     private static ThreadLocal<SimpleDateFormat> threadLocal = new ThreadLocal<SimpleDateFormat>() {
         protected synchronized SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyy-MM-dd");
+            return  new SimpleDateFormat("yyyy-MM-dd");
         }
     };
 

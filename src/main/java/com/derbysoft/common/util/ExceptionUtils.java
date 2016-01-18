@@ -31,9 +31,13 @@ public class ExceptionUtils {
     }
 
     public static String toString(Throwable throwable, Collection<String> keyWords) {
+
         try {
             StringWriter sw = new StringWriter();
             throwable.printStackTrace(new PrintWriter(sw));
+            if (NullPointerException.class.isInstance(throwable)) {
+                sw.toString();
+            }
             BufferedReader reader = new BufferedReader(new StringReader(sw.toString()));
             StringBuilder sb = new StringBuilder();
             sb.append(reader.readLine());

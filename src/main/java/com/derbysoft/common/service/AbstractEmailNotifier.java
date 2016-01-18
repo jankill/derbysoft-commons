@@ -2,6 +2,8 @@ package com.derbysoft.common.service;
 
 import com.derbysoft.common.domain.EmailNotifyDTO;
 import com.derbysoft.common.util.EmailUtils;
+import com.derbysoft.common.util.SplitUtils;
+import com.derbysoft.common.util.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +24,6 @@ import java.util.List;
  * @since 2014-3-19
  */
 public abstract class AbstractEmailNotifier {
-
-    private static final String SEMICOLON = ";";
 
     protected Log logger = LogFactory.getLog(getClass());
 
@@ -52,9 +54,8 @@ public abstract class AbstractEmailNotifier {
 
 
     private List<String> getEmails(String emails) {
-        String[] emailArray = StringUtils.splitByWholeSeparator(emails, SEMICOLON);
-        List<String> mailTo = new ArrayList<String>();
-        for (String email : emailArray) {
+        List<String> mailTo = Lists.newArrayList();
+        for (String email : SplitUtils.split(emails)) {
             if (EmailUtils.checkEmail(email)) {
                 mailTo.add(email);
             }
