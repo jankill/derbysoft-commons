@@ -1,8 +1,7 @@
 package com.derbysoft.common.util.date;
 
+import org.joda.time.LocalDate;
 import org.junit.Test;
-
-import java.text.SimpleDateFormat;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -20,6 +19,9 @@ public class DateValidatorTest {
         assertTrue(DateValidator.validate("2013-07-31"));
         assertFalse(DateValidator.validate("2013-07-32"));
         assertTrue(DateValidator.validate("2018-01-01"));
+        assertTrue(DateValidator.validate("2017-02-10"));
+        assertTrue(DateValidator.validate("2017-02-11"));
+        assertTrue(DateValidator.validate("2017-02-12"));
         assertTrue(DateValidator.validate("2012-02-29"));
         assertFalse(DateValidator.validate("2013-02-29"));
         assertTrue(DateValidator.validate("2013-02-28"));
@@ -46,37 +48,9 @@ public class DateValidatorTest {
     }
 
     @Test
-    public void testPerformance() {
-        int count = 1000000;
-        String date = "2015-02-29";
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < count; i++) {
-            validateDate(date);
-        }
-        System.out.println(System.currentTimeMillis() - start);
-        start = System.currentTimeMillis();
-        for (int i = 0; i < count; i++) {
-            DateValidator.validate(date);
-        }
-        System.out.println(System.currentTimeMillis() - start);
-
+    public void fixedRangeTest() {
+        for (LocalDate localDate : DateRangeIterator.of("2000-01-01", "2100-01-01")) {
+            assertTrue(DateValidator.validate(localDate.toString()));
+        };
     }
-
-
-    public static boolean validateDate(String date) {
-        try {
-            Dates.of(date, threadLocal.get());
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private static ThreadLocal<SimpleDateFormat> threadLocal = new ThreadLocal<SimpleDateFormat>() {
-        protected synchronized SimpleDateFormat initialValue() {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            simpleDateFormat.setLenient(false);
-            return simpleDateFormat;
-        }
-    };
 }

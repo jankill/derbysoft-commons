@@ -90,6 +90,20 @@ public abstract class CommonService<T> {
         return commonRepository.paginate(detachedCriteria, paginater);
     }
 
+    protected void eqIgnoreCase(DetachedCriteria detachedCriteria, String property, Object value) {
+        if (value == null) {
+            return;
+        }
+        if (String.class.isInstance(value) && StringUtils.isBlank((String) value)) {
+            return;
+        }
+        if (String.class.isInstance(value)) {
+            detachedCriteria.add(Restrictions.eq(property, StringUtils.trim((String) value)).ignoreCase());
+        } else {
+            detachedCriteria.add(Restrictions.eq(property, value).ignoreCase());
+        }
+    }
+
     protected void eq(DetachedCriteria detachedCriteria, String property, Object value) {
         if (value == null) {
             return;
@@ -112,9 +126,9 @@ public abstract class CommonService<T> {
             return;
         }
         if (String.class.isInstance(value)) {
-            detachedCriteria.add(Restrictions.not(Restrictions.eq(property, StringUtils.trim((String) value))));
+            detachedCriteria.add(Restrictions.not(Restrictions.eq(property, StringUtils.trim((String) value)).ignoreCase()));
         } else {
-            detachedCriteria.add(Restrictions.not(Restrictions.eq(property, value)));
+            detachedCriteria.add(Restrictions.not(Restrictions.eq(property, value).ignoreCase()));
         }
     }
 
